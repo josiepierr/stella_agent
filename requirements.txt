@@ -1,0 +1,8 @@
+anthropic           # API Claude
+openai              # API OpenAI (backup + Whisper + TTS)
+chromadb            # base vectorielle RAG
+streamlit           # interface démo
+beautifulsoup4      # scraping docs Stellantis
+requests            # appels HTTP
+python-dotenv       # gestion des clés API
+sentence-transformers # embeddings pour ChromaDB

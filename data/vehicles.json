@@ -1,0 +1,82 @@
+{
+  "vehicles": [
+    {
+      "vehicle_id": "V001",
+      "user_id": "U001",
+      "marque": "Citroën",
+      "modele": "C3",
+      "annee": 2021,
+      "motorisation": "thermique",
+      "kilometrage_actuel": 28400,
+      "derniere_revision_km": 20000,
+      "prochaine_revision_km": 30000,
+      "km_avant_revision": 1600,
+      "voyants_actifs": [
+        {
+          "code": "pression_pneu",
+          "libelle": "Pression des pneus insuffisante",
+          "urgence": "moyenne",
+          "explication_simple": "Un ou plusieurs pneus manquent d'air. Ce n'est pas urgent mais à corriger dans la semaine — ça consomme plus et c'est moins sûr dans les virages.",
+          "action_recommandee": "Gonfler les pneus à la prochaine station service (gratuit) ou demander une vérification lors du prochain passage en atelier."
+        }
+      ],
+      "niveau_carburant_pct": 45,
+      "derniere_visite_reseau": "2024-09-12",
+      "contrat_entretien": false,
+      "couleur": "Rouge Elixir",
+      "immatriculation": "EJ-456-LY",
+      "date_achat": "2023-09-01",
+      "prochaine_ct": "2025-09-01",
+      "garantie_active": true,
+      "garantie_expiration": "2026-09-01"
+    },
+    {
+      "vehicle_id": "V002",
+      "user_id": "U002",
+      "marque": "Peugeot",
+      "modele": "e-208",
+      "annee": 2023,
+      "motorisation": "electrique",
+      "kilometrage_actuel": 41200,
+      "derniere_revision_km": 40000,
+      "prochaine_revision_km": 50000,
+      "km_avant_revision": 8800,
+      "voyants_actifs": [],
+      "niveau_batterie_pct": 28,
+      "autonomie_restante_km": 67,
+      "capacite_batterie_kwh": 50,
+      "derniere_charge": "2026-05-03",
+      "derniere_visite_reseau": "2026-03-15",
+      "contrat_entretien": true,
+      "couleur": "Gris Platinium",
+      "immatriculation": "GH-789-BX",
+      "date_achat": "2023-05-10",
+      "garantie_active": true,
+      "garantie_expiration": "2028-05-10",
+      "garantie_batterie_expiration": "2031-05-10"
+    },
+    {
+      "vehicle_id": "V003",
+      "user_id": "U003",
+      "marque": "Jeep",
+      "modele": "Avenger",
+      "annee": 2023,
+      "motorisation": "hybride",
+      "kilometrage_actuel": 19800,
+      "derniere_revision_km": 15000,
+      "prochaine_revision_km": 25000,
+      "km_avant_revision": 5200,
+      "voyants_actifs": [],
+      "niveau_carburant_pct": 72,
+      "niveau_batterie_hybride_pct": 65,
+      "derniere_visite_reseau": "2026-02-20",
+      "contrat_entretien": false,
+      "couleur": "Vert Crater",
+      "immatriculation": "KL-123-PA",
+      "date_achat": "2024-05-04",
+      "anniversaire_vehicule_dans_jours": 0,
+      "garantie_active": true,
+      "garantie_expiration": "2027-05-04"
+    }
+  ]
+}
