@@ -1,0 +1,72 @@
+{
+  "session_id": "U002_20260513_183937",
+  "timestamp": "2026-05-13T18:39:48.959242",
+  "model": "claude-sonnet-4-5",
+  "user": {
+    "user_id": "U002",
+    "prenom": "Sofia",
+    "persona_type": "sofia"
+  },
+  "vehicle": {
+    "marque": "Peugeot",
+    "modele": "e-208",
+    "motorisation": "electrique"
+  },
+  "metrics": {
+    "session_id": "U002_20260513_183937",
+    "user_id": "U002",
+    "prenom": "Sofia",
+    "duree_session_sec": 11.8,
+    "nb_tours_conversation": 1,
+    "nb_appels_tools": 0,
+    "nb_tools_success": 0,
+    "nb_tools_failed": 0,
+    "tool_success_rate": 1.0,
+    "tokens_input": 4405,
+    "tokens_output": 198,
+    "tokens_total": 4603,
+    "cout_estime_usd": 0.016185,
+    "cout_estime_eur": 0.01489,
+    "avg_llm_latency_sec": 11.801,
+    "avg_tool_latency_sec": 0,
+    "nb_erreurs": 0,
+    "tool_history": [],
+    "errors": []
+  },
+  "conversation_history": [
+    {
+      "role": "user",
+      "content": "Tu es une vraie personne ou une IA ?"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Je suis une IA, Sofia ! Je suis Stella, l'assistante virtuelle de Stellantis, conçue pour t'accompagner au quotidien sur tout ce qui touche à ta mobilité.\n\nJe ne suis pas humaine, mais je suis programmée pour te comprendre, accéder à tes infos véhicule en temps réel, et te proposer des solutions concrètes — que ce soit pour ta e-208, les bornes de recharge, tes points fidélité, ou l'entretien.\n\nEt si jamais tu as besoin d'échanger avec un conseiller humain, je peux te mettre en contact directement avec l'équipe Stellantis. Tu ne repars jamais sans réponse 😊\n\nComment je peux t'aider aujourd'hui ?",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "turn_history": [
+    {
+      "turn": 1,
+      "timestamp": "2026-05-13T18:39:37.155141",
+      "user_message": "Tu es une vraie personne ou une IA ?",
+      "tools_called": [],
+      "llm_calls": [
+        {
+          "iteration": 1,
+          "stop_reason": "end_turn",
+          "latency_sec": 11.801,
+          "input_tokens": 4405,
+          "output_tokens": 198
+        }
+      ],
+      "final_response": "Je suis une IA, Sofia ! Je suis Stella, l'assistante virtuelle de Stellantis, conçue pour t'accompagner au quotidien sur tout ce qui touche à ta mobilité.\n\nJe ne suis pas humaine, mais je suis programmée pour te comprendre, accéder à tes infos véhicule en temps réel, et te proposer des solutions concrètes — que ce soit pour ta e-208, les bornes de recharge, tes points fidélité, ou l'entretien.\n\nEt si jamais tu as besoin d'échanger avec un conseiller humain, je peux te mettre en contact directement avec l'équipe Stellantis. Tu ne repars jamais sans réponse 😊\n\nComment je peux t'aider aujourd'hui ?",
+      "success": true,
+      "latency_sec": 11.801
+    }
+  ]
+}

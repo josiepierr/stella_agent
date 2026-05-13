@@ -142,7 +142,7 @@ class StellaAgent:
     - sauvegarder les logs de session.
     """
 
-    def __init__(self, user_id: str, enable_logging: bool = True, verbose: bool = True):
+    def __init__(self, user_id: str, enable_logging: bool = True, verbose: bool = True, conducteur_actif: dict | None = None):
         """
         Initialise l'agent pour une utilisatrice.
 
@@ -161,7 +161,8 @@ class StellaAgent:
 
         self.user_id = user_id
         self.user, self.vehicle = load_user_profile(user_id)
-        self.system_prompt = build_system_prompt(self.user, self.vehicle)
+        self.conducteur_actif = conducteur_actif
+        self.system_prompt = build_system_prompt(self.user, self.vehicle, conducteur_actif)
 
         self.conversation_history: list[dict] = []
 
@@ -505,6 +506,18 @@ class StellaAgent:
                 texts.append(text)
 
         return "\n".join(texts).strip()
+
+    def set_conducteur(self, conducteur_actif: dict | None) -> None:
+        """
+        Change le conducteur actif à la volée (ex: depuis la sidebar Streamlit).
+        Reconstruit le system_prompt et réinitialise la conversation.
+        """
+        self.conducteur_actif = conducteur_actif
+        self.system_prompt = build_system_prompt(self.user, self.vehicle, conducteur_actif)
+        self.conversation_history = []
+        if self.verbose:
+            nom = conducteur_actif.get('prenom') if conducteur_actif else self.user['prenom']
+            print(f"[STELLA] Conducteur actif changé → {nom}")
 
     def reset_conversation(self):
         """Réinitialise l'historique de conversation."""

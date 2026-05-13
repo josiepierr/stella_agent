@@ -13,6 +13,11 @@ import time
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "agent"))
 from stella import StellaAgent
+try:
+    from voice import render_voice_input, speak_response, render_audio_player
+    VOICE_AVAILABLE = True
+except ImportError:
+    VOICE_AVAILABLE = False
 
 
 # ──────────────────────────────────────────────
@@ -398,6 +403,10 @@ def ask_stella(message: str):
         time.sleep(0.6)
         response = st.session_state.agent.chat(message)
     add_assistant_message(response)
+    if VOICE_AVAILABLE and st.session_state.get("voice_enabled") and response:
+        audio = speak_response(response)
+        if audio:
+            render_audio_player(audio)
 
 
 def set_pending(query: str):
@@ -408,6 +417,33 @@ def render_profile_cards(user: dict, vehicle: dict):
     """Cartes visuelles contextuelles pour effet démo."""
     uid = user["user_id"]
     motorisation = vehicle.get("motorisation")
+    # ── Sélecteur conducteur actif ─────────────────────────────
+    conducteurs = user.get("conducteurs_associes", [])
+    if conducteurs:
+        options_conducteur = [f"{user['prenom']} (propriétaire)"] +                              [f"{c['prenom']} ({c['relation']})" for c in conducteurs]
+        choix = st.selectbox(
+            "Qui prend le volant ?",
+            options_conducteur,
+            key=f"conducteur_{chosen_uid}",
+            help="Les points fidélité et offres restent liés à la propriétaire"
+        )
+        # Retrouver le conducteur sélectionné
+        if choix == options_conducteur[0]:
+            conducteur_actif = None  # propriétaire
+        else:
+            idx = options_conducteur.index(choix) - 1
+            conducteur_actif = conducteurs[idx]
+
+        # Mettre à jour l'agent si le conducteur change
+        prev = st.session_state.get("conducteur_actif_id")
+        curr = conducteur_actif.get("conducteur_id") if conducteur_actif else None
+        if prev != curr:
+            st.session_state["conducteur_actif_id"] = curr
+            if st.session_state.agent:
+                st.session_state.agent.set_conducteur(conducteur_actif)
+    else:
+        conducteur_actif = None
+
     voyants = vehicle.get("voyants_actifs", [])
     batterie = vehicle.get("niveau_batterie_pct", 100)
     anniv = vehicle.get("anniversaire_vehicule_dans_jours")
@@ -664,6 +700,13 @@ with st.sidebar:
 
     st.markdown("---")
 
+    if VOICE_AVAILABLE:
+        st.session_state["voice_enabled"] = st.toggle(
+            "🎙️ Mode vocal",
+            value=st.session_state.get("voice_enabled", False),
+            help="Active le micro et la lecture vocale des réponses de Stella"
+        )
+
     if st.button("🏠 Nouvelle conversation", use_container_width=True):
         if st.session_state.agent:
             st.session_state.agent.reset_conversation()
@@ -721,6 +764,12 @@ with st.form(key="chat_form", clear_on_submit=True):
         submitted = st.form_submit_button("Envoyer →", use_container_width=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
+if VOICE_AVAILABLE and st.session_state.get("voice_enabled"):
+    voice_text = render_voice_input()
+    if voice_text:
+        ask_stella(voice_text)
+        st.rerun()
 
 if submitted and user_input.strip():
     ask_stella(user_input.strip())

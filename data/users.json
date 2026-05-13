@@ -7,7 +7,11 @@
       "ville": "Lyon",
       "type_trajet_dominant": "urbain",
       "niveau_connaissance_auto": "debutante",
-      "preferences": ["budget", "securite", "simplicite"],
+      "preferences": [
+        "budget",
+        "securite",
+        "simplicite"
+      ],
       "points_fidelite": 320,
       "niveau_fidelite": "Argent",
       "anciennete_mois": 8,
@@ -18,8 +22,22 @@
           "date": "2026-04-01",
           "resume": "Camille a demandé à quoi sert le voyant pression pneu. Agent a expliqué et proposé un RDV. RDV non pris.",
           "sentiment": "neutre",
-          "actions_declenchees": ["explication_voyant"],
-          "actions_non_converties": ["prise_rdv"]
+          "actions_declenchees": [
+            "explication_voyant"
+          ],
+          "actions_non_converties": [
+            "prise_rdv"
+          ]
+        }
+      ],
+      "conducteurs_associes": [
+        {
+          "conducteur_id": "C001",
+          "prenom": "Thomas",
+          "relation": "conjoint",
+          "age": 27,
+          "niveau_connaissance_auto": "intermediaire",
+          "acces_autorise": true
         }
       ]
     },
@@ -30,7 +48,11 @@
       "ville": "Bordeaux",
       "type_trajet_dominant": "professionnel_longue_distance",
       "niveau_connaissance_auto": "intermediaire",
-      "preferences": ["efficacite", "recharge", "voyage_pro"],
+      "preferences": [
+        "efficacite",
+        "recharge",
+        "voyage_pro"
+      ],
       "points_fidelite": 1450,
       "niveau_fidelite": "Or",
       "anciennete_mois": 24,
@@ -41,8 +63,20 @@
           "date": "2026-04-10",
           "resume": "Sofia a demandé les bornes de recharge sur l'axe Bordeaux-Paris. Agent a proposé 3 bornes avec temps de charge.",
           "sentiment": "positif",
-          "actions_declenchees": ["recommandation_recharge"],
+          "actions_declenchees": [
+            "recommandation_recharge"
+          ],
           "actions_non_converties": []
+        }
+      ],
+      "conducteurs_associes": [
+        {
+          "conducteur_id": "C002",
+          "prenom": "Lucas",
+          "relation": "frère",
+          "age": 24,
+          "niveau_connaissance_auto": "debutant",
+          "acces_autorise": true
         }
       ]
     },
@@ -53,7 +87,12 @@
       "ville": "Paris",
       "type_trajet_dominant": "mixte_lifestyle",
       "niveau_connaissance_auto": "intermediaire",
-      "preferences": ["lifestyle", "accessoires", "road_trip", "esthetique"],
+      "preferences": [
+        "lifestyle",
+        "accessoires",
+        "road_trip",
+        "esthetique"
+      ],
       "points_fidelite": 780,
       "niveau_fidelite": "Argent",
       "anciennete_mois": 14,
@@ -64,8 +103,22 @@
           "date": "2026-04-20",
           "resume": "Inès a demandé des idées de road trip pour le weekend. Agent a suggéré la Normandie avec hôtels partenaires.",
           "sentiment": "positif",
-          "actions_declenchees": ["suggestion_voyage"],
-          "actions_non_converties": ["reservation_hotel"]
+          "actions_declenchees": [
+            "suggestion_voyage"
+          ],
+          "actions_non_converties": [
+            "reservation_hotel"
+          ]
+        }
+      ],
+      "conducteurs_associes": [
+        {
+          "conducteur_id": "C003",
+          "prenom": "Marie",
+          "relation": "mère",
+          "age": 55,
+          "niveau_connaissance_auto": "intermediaire",
+          "acces_autorise": true
         }
       ]
     }

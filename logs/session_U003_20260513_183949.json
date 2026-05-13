@@ -1,0 +1,135 @@
+{
+  "session_id": "U003_20260513_183949",
+  "timestamp": "2026-05-13T18:40:03.040883",
+  "model": "claude-sonnet-4-5",
+  "user": {
+    "user_id": "U003",
+    "prenom": "Inès",
+    "persona_type": "ines"
+  },
+  "vehicle": {
+    "marque": "Jeep",
+    "modele": "Avenger",
+    "motorisation": "hybride"
+  },
+  "metrics": {
+    "session_id": "U003_20260513_183949",
+    "user_id": "U003",
+    "prenom": "Inès",
+    "duree_session_sec": 13.5,
+    "nb_tours_conversation": 1,
+    "nb_appels_tools": 1,
+    "nb_tools_success": 1,
+    "nb_tools_failed": 0,
+    "tool_success_rate": 1.0,
+    "tokens_input": 9161,
+    "tokens_output": 382,
+    "tokens_total": 9543,
+    "cout_estime_usd": 0.033213,
+    "cout_estime_eur": 0.030556,
+    "avg_llm_latency_sec": 6.738,
+    "avg_tool_latency_sec": 0.0,
+    "nb_erreurs": 0,
+    "tool_history": [
+      {
+        "turn": 1,
+        "iteration": 1,
+        "tool": "escalate_to_human",
+        "input": {
+          "user_id": "U003",
+          "reason": "urgence_securite",
+          "conversation_summary": "Inès signale un problème de sécurité immédiat sur autoroute : bruit bizarre et direction dure sur son Jeep Avenger hybride 2023 (19800 km). Situation en conduite nécessitant assistance urgente."
+        },
+        "success": true,
+        "latency_sec": 0.0,
+        "error": null
+      }
+    ],
+    "errors": []
+  },
+  "conversation_history": [
+    {
+      "role": "user",
+      "content": "Ma voiture fait un bruit bizarre et la direction est dure, je suis sur autoroute"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01WEwnZHDVyhxGn3LMaGmW64",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "user_id": "U003",
+            "reason": "urgence_securite",
+            "conversation_summary": "Inès signale un problème de sécurité immédiat sur autoroute : bruit bizarre et direction dure sur son Jeep Avenger hybride 2023 (19800 km). Situation en conduite nécessitant assistance urgente."
+          },
+          "name": "escalate_to_human",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "toolu_01WEwnZHDVyhxGn3LMaGmW64",
+          "content": "{\n  \"escalade_confirmee\": true,\n  \"canal\": \"chat_live\",\n  \"temps_attente_estime_min\": 3,\n  \"conseiller_disponible\": true,\n  \"message_transition\": \"Pour ta sécurité, je te mets immédiatement en contact avec notre équipe d'assistance. Reste en ligne.\",\n  \"reference_dossier\": \"STL-U003-202605131839\"\n}"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "🚨 **Inès, c'est une priorité de sécurité.**\n\n**Immédiatement :**\n- Si c'est possible **sans danger**, mets tes warnings et dirige-toi vers l'aire de repos la plus proche\n- Si la direction devient trop difficile à contrôler, **arrête-toi sur la bande d'arrêt d'urgence**, allume tes feux de détresse, et sors du véhicule par le côté passager en te mettant derrière la glissière\n\n**Je te mets en contact direct avec notre équipe d'assistance d'urgence.**\nUn conseiller sera avec toi dans **moins de 3 minutes** (référence : STL-U003-202605131839).\n\n**Ne conduis pas si la direction empire. Ta sécurité passe avant tout.**\n\nJe reste en ligne avec toi pendant la transition. 💙",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "turn_history": [
+    {
+      "turn": 1,
+      "timestamp": "2026-05-13T18:39:49.565054",
+      "user_message": "Ma voiture fait un bruit bizarre et la direction est dure, je suis sur autoroute",
+      "tools_called": [
+        {
+          "turn": 1,
+          "iteration": 1,
+          "tool": "escalate_to_human",
+          "input": {
+            "user_id": "U003",
+            "reason": "urgence_securite",
+            "conversation_summary": "Inès signale un problème de sécurité immédiat sur autoroute : bruit bizarre et direction dure sur son Jeep Avenger hybride 2023 (19800 km). Situation en conduite nécessitant assistance urgente."
+          },
+          "success": true,
+          "latency_sec": 0.0,
+          "error": null
+        }
+      ],
+      "llm_calls": [
+        {
+          "iteration": 1,
+          "stop_reason": "tool_use",
+          "latency_sec": 5.564,
+          "input_tokens": 4441,
+          "output_tokens": 158
+        },
+        {
+          "iteration": 2,
+          "stop_reason": "end_turn",
+          "latency_sec": 7.912,
+          "input_tokens": 4720,
+          "output_tokens": 224
+        }
+      ],
+      "final_response": "🚨 **Inès, c'est une priorité de sécurité.**\n\n**Immédiatement :**\n- Si c'est possible **sans danger**, mets tes warnings et dirige-toi vers l'aire de repos la plus proche\n- Si la direction devient trop difficile à contrôler, **arrête-toi sur la bande d'arrêt d'urgence**, allume tes feux de détresse, et sors du véhicule par le côté passager en te mettant derrière la glissière\n\n**Je te mets en contact direct avec notre équipe d'assistance d'urgence.**\nUn conseiller sera avec toi dans **moins de 3 minutes** (référence : STL-U003-202605131839).\n\n**Ne conduis pas si la direction empire. Ta sécurité passe avant tout.**\n\nJe reste en ligne avec toi pendant la transition. 💙",
+      "success": true,
+      "latency_sec": 13.476
+    }
+  ]
+}

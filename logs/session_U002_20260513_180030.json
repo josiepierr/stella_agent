@@ -1,0 +1,72 @@
+{
+  "session_id": "U002_20260513_180030",
+  "timestamp": "2026-05-13T18:00:39.142324",
+  "model": "claude-sonnet-4-5",
+  "user": {
+    "user_id": "U002",
+    "prenom": "Sofia",
+    "persona_type": "sofia"
+  },
+  "vehicle": {
+    "marque": "Peugeot",
+    "modele": "e-208",
+    "motorisation": "electrique"
+  },
+  "metrics": {
+    "session_id": "U002_20260513_180030",
+    "user_id": "U002",
+    "prenom": "Sofia",
+    "duree_session_sec": 8.4,
+    "nb_tours_conversation": 1,
+    "nb_appels_tools": 0,
+    "nb_tools_success": 0,
+    "nb_tools_failed": 0,
+    "tool_success_rate": 1.0,
+    "tokens_input": 4311,
+    "tokens_output": 214,
+    "tokens_total": 4525,
+    "cout_estime_usd": 0.016143,
+    "cout_estime_eur": 0.014852,
+    "avg_llm_latency_sec": 8.357,
+    "avg_tool_latency_sec": 0,
+    "nb_erreurs": 0,
+    "tool_history": [],
+    "errors": []
+  },
+  "conversation_history": [
+    {
+      "role": "user",
+      "content": "Tu es une vraie personne ou une IA ?"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Je suis une IA, Sofia 😊\n\nJe suis Stella, ton assistante personnelle de mobilité développée par Stellantis. Je suis conçue pour t'accompagner au quotidien sur tout ce qui concerne ta Peugeot e-208 : entretien, recharge, avantages fidélité, trajets...\n\nMême si je ne suis pas humaine, je suis là pour te donner des réponses personnalisées et concrètes. Et si jamais tu as besoin de parler à quelqu'un de l'équipe, je peux te mettre en contact avec un conseiller humain à tout moment.\n\nD'ailleurs, je vois que ta batterie est à 28% — tu as un trajet prévu prochainement ou tu préfères que je te trouve une borne à Bordeaux pour recharger tranquillement ?",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "turn_history": [
+    {
+      "turn": 1,
+      "timestamp": "2026-05-13T18:00:30.783763",
+      "user_message": "Tu es une vraie personne ou une IA ?",
+      "tools_called": [],
+      "llm_calls": [
+        {
+          "iteration": 1,
+          "stop_reason": "end_turn",
+          "latency_sec": 8.357,
+          "input_tokens": 4311,
+          "output_tokens": 214
+        }
+      ],
+      "final_response": "Je suis une IA, Sofia 😊\n\nJe suis Stella, ton assistante personnelle de mobilité développée par Stellantis. Je suis conçue pour t'accompagner au quotidien sur tout ce qui concerne ta Peugeot e-208 : entretien, recharge, avantages fidélité, trajets...\n\nMême si je ne suis pas humaine, je suis là pour te donner des réponses personnalisées et concrètes. Et si jamais tu as besoin de parler à quelqu'un de l'équipe, je peux te mettre en contact avec un conseiller humain à tout moment.\n\nD'ailleurs, je vois que ta batterie est à 28% — tu as un trajet prévu prochainement ou tu préfères que je te trouve une borne à Bordeaux pour recharger tranquillement ?",
+      "success": true,
+      "latency_sec": 8.359
+    }
+  ]
+}

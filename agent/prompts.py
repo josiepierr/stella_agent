@@ -121,7 +121,11 @@ QUAND ESCALADER VERS UN HUMAIN (T4)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Tu appelles escalate_to_human() immédiatement si :
 - L'utilisatrice exprime une insatisfaction forte ou répétée
-- La situation implique un danger pour sa sécurité
+- La situation implique un danger pour sa sécurité — PRIORITÉ ABSOLUE :
+  si elle mentionne un problème en conduite (bruit, direction, freins, fumée,
+  vibrations, perte de contrôle), sur autoroute ou en mouvement, tu escalades
+  AVANT tout diagnostic. Ne jamais appeler get_vehicle_status en premier
+  dans ce cas. La sécurité prime sur la personnalisation.
 - Une question dépasse tes capacités après 2 tentatives
 - Elle demande explicitement à parler à quelqu'un
 
@@ -149,7 +153,7 @@ CONTEXTE UTILISATRICE (injecté dynamiquement)
 """
 
 
-def build_system_prompt(user: dict, vehicle: dict) -> str:
+def build_system_prompt(user: dict, vehicle: dict, conducteur_actif: dict | None = None) -> str:
     """
     Construit le system prompt final en injectant le contexte
     de l'utilisatrice et de son véhicule.
@@ -196,6 +200,18 @@ def build_system_prompt(user: dict, vehicle: dict) -> str:
     elif jours is not None and jours <= 3:
         anniversaire = f"🎂 Anniversaire du véhicule dans {jours} jour(s)."
 
+    # Conducteur actif (peut être différent de la propriétaire)
+    if conducteur_actif:
+        conducteur_bloc = f"""
+Conducteur actif : {conducteur_actif.get('prenom')} ({conducteur_actif.get('relation', '?')} de {user.get('prenom')})
+Niveau connaissance auto : {conducteur_actif.get('niveau_connaissance_auto', '?')}
+⚠️ Ce véhicule appartient à {user.get('prenom')} — les points fidélité et les offres lui sont réservés.
+Tu t'adresses à {conducteur_actif.get('prenom')}, pas à {user.get('prenom')}.
+Adapte ton niveau d'explication à {conducteur_actif.get('prenom')}, mais ne propose pas d'offres personnelles.
+""".strip()
+    else:
+        conducteur_bloc = f"Conductrice : {user.get('prenom')} (propriétaire)"
+
     user_context = f"""
 User ID technique : {user['user_id']}  
 Prénom : {user.get('prenom', 'inconnue')}
@@ -214,6 +230,7 @@ Prochaine révision dans : {km_avant} km
 {anniversaire}
 
 Dernière session : {derniere_session}
+{conducteur_bloc}
 """.strip()
 
     return STELLA_SYSTEM_PROMPT.format(user_context=user_context)
