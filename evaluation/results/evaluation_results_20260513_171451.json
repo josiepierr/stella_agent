@@ -1,0 +1,445 @@
+{
+  "timestamp": "2026-05-13T17:14:51.276192",
+  "summary": {
+    "nb_scenarios": 10,
+    "nb_success": 10,
+    "success_rate": 1.0,
+    "avg_score": 0.827,
+    "avg_latency_sec": 15.345,
+    "avg_cost_eur": 0.032675,
+    "avg_tokens": 10081.9,
+    "avg_tool_calls": 1,
+    "avg_tool_success_rate": 1.0,
+    "total_errors": 0
+  },
+  "results": [
+    {
+      "scenario_id": "C1_voyant_pneu",
+      "persona": "Camille",
+      "user_id": "U001",
+      "message": "J’ai un voyant allumé sur ma voiture, que dois-je faire ?",
+      "response": "Salut Camille ! 👋\n\nC'est ton voyant de **pression des pneus** qui est allumé — on en avait déjà parlé la dernière fois. Pas d'inquiétude, ce n'est pas une urgence, mais **c'est important de s'en occuper cette semaine**.\n\n**Pourquoi ?**  \nUn pneu sous-gonflé, c'est :\n- Une consommation de carburant plus élevée\n- Une tenue de route moins bonne, surtout dans les virages\n- Une usure plus rapide du pneu\n\n**Ce que tu peux faire :**\n\n**Option 1 — La plus simple**  \nPasse à une **station-service** (Total, BP, etc.) et utilise la borne de gonflage (c'est gratuit). Les pressions recommandées pour ta C3 sont indiquées sur une étiquette dans le montant de la portière conducteur (souvent autour de 2.2 bars).\n\n**Option 2 — Tu préfères déléguer**  \nJe peux te trouver un garage Citroën agréé à Lyon qui vérifiera ça gratuitement ou pour quelques euros. Veux-tu que je te trouve une adresse proche de chez toi ?\n\n**Action concrète :** Si tu passes devant une station cette semaine, prends 5 minutes pour gonfler tes pneus. Ça te fera économiser du carburant dès maintenant ! 🚗",
+      "expected_keywords": [
+        "pneu",
+        "pression",
+        "garage"
+      ],
+      "matched_keywords": [
+        "pneu",
+        "pression",
+        "garage"
+      ],
+      "keyword_score": 1.0,
+      "expected_tools": [
+        "get_vehicle_status",
+        "get_maintenance_recommendation"
+      ],
+      "used_tools": [
+        "get_vehicle_status"
+      ],
+      "matched_tools": [
+        "get_vehicle_status"
+      ],
+      "tool_score": 0.5,
+      "global_score": 0.775,
+      "success": true,
+      "latency_sec": 17.381,
+      "metrics": {
+        "tokens_total": 9528,
+        "tokens_input": 9094,
+        "tokens_output": 434,
+        "cout_estime_eur": 0.031089,
+        "nb_appels_tools": 1,
+        "tool_success_rate": 1.0,
+        "avg_llm_latency_sec": 8.686,
+        "avg_tool_latency_sec": 0.003,
+        "nb_erreurs": 0
+      },
+      "errors": []
+    },
+    {
+      "scenario_id": "C2_garage_proche",
+      "persona": "Camille",
+      "user_id": "U001",
+      "message": "Trouve-moi un garage Citroën proche de Lyon.",
+      "response": "Camille, j'ai trouvé **Citroën Lyon Confluence** à seulement 2,5 km de toi !\n\n📍 **45 cours Charlemagne, Lyon 2**  \n☎️ **04 72 41 XX XX**  \n🕒 **Lun-Ven 8h-18h, Sam 9h-12h**  \n⭐ **Note : 4,7/5**\n\nIls proposent :\n✔️ Révisions  \n✔️ Pneus (pratique pour ton voyant de pression !)  \n✔️ Freins, climatisation, CT partenaire  \n\nLe prochain créneau disponible est **le 8 mai** selon le système.\n\nTu veux que je t'envoie le lien pour réserver ton RDV directement en ligne ? 🚗  \n[📲 Réserver ici](https://www.citroen.fr/rdv)\n\nÇa te permettrait de régler à la fois le voyant pneu et de te rapprocher de ta prochaine révision (dans 1600 km).",
+      "expected_keywords": [
+        "garage",
+        "Citroën",
+        "Lyon"
+      ],
+      "matched_keywords": [
+        "Citroën",
+        "Lyon"
+      ],
+      "keyword_score": 0.667,
+      "expected_tools": [
+        "get_partners"
+      ],
+      "used_tools": [
+        "get_partners"
+      ],
+      "matched_tools": [
+        "get_partners"
+      ],
+      "tool_score": 1.0,
+      "global_score": 0.817,
+      "success": true,
+      "latency_sec": 14.623,
+      "metrics": {
+        "tokens_total": 9649,
+        "tokens_input": 9265,
+        "tokens_output": 384,
+        "cout_estime_eur": 0.030871,
+        "nb_appels_tools": 1,
+        "tool_success_rate": 1.0,
+        "avg_llm_latency_sec": 7.311,
+        "avg_tool_latency_sec": 0.0,
+        "nb_erreurs": 0
+      },
+      "errors": []
+    },
+    {
+      "scenario_id": "S1_recharge_batterie",
+      "persona": "Sofia",
+      "user_id": "U002",
+      "message": "Je dois recharger ma voiture rapidement à Bordeaux.",
+      "response": "Sofia, avec 28% de batterie restante, je te recommande la **borne Free2move Charge à Bordeaux Gare** — elle est à seulement 2,3 km de toi, parvis de la Gare Saint-Jean.\n\n**Ce qui est intéressant :**\n- Puissance : 150 kW (charge rapide)\n- Temps estimé : **20 minutes** pour atteindre 80%\n- Tarif : 0,45 €/kWh\n- Compatible avec ton compte Free2move\n- Disponible maintenant ✅\n\nVu que tu es à 67 km d'autonomie, tu peux y aller tranquillement. \n\n**Je lance la navigation vers cette borne ou tu préfères la réserver directement via l'app Free2move Charge ?**",
+      "expected_keywords": [
+        "borne",
+        "recharge",
+        "batterie",
+        "Bordeaux"
+      ],
+      "matched_keywords": [
+        "borne",
+        "batterie",
+        "Bordeaux"
+      ],
+      "keyword_score": 0.75,
+      "expected_tools": [
+        "get_vehicle_status",
+        "get_charging_recommendation"
+      ],
+      "used_tools": [
+        "get_charging_recommendation"
+      ],
+      "matched_tools": [
+        "get_charging_recommendation"
+      ],
+      "tool_score": 0.5,
+      "global_score": 0.638,
+      "success": true,
+      "latency_sec": 10.046,
+      "metrics": {
+        "tokens_total": 9536,
+        "tokens_input": 9253,
+        "tokens_output": 283,
+        "cout_estime_eur": 0.029444,
+        "nb_appels_tools": 1,
+        "tool_success_rate": 1.0,
+        "avg_llm_latency_sec": 5.022,
+        "avg_tool_latency_sec": 0.0,
+        "nb_erreurs": 0
+      },
+      "errors": []
+    },
+    {
+      "scenario_id": "S2_free2move_charge",
+      "persona": "Sofia",
+      "user_id": "U002",
+      "message": "Explique-moi Free2move Charge.",
+      "response": "Sofia, **Free2move Charge**, c'est l'écosystème de recharge complet de Stellantis, conçu pour que tu ne sois jamais à court de batterie. 🔋\n\n**Concrètement, ça veut dire quoi ?**\n\nC'est une solution tout-en-un qui combine **3 piliers** :\n\n🔌 **Du matériel** : bornes de recharge à domicile ou en entreprise, avec de futures options comme la recharge sans fil ou par robot inductif (oui, ça arrive !)\n\n📱 **Du logiciel** : une appli qui te permet de localiser les bornes publiques, de gérer ta recharge, et d'optimiser tes coûts énergétiques\n\n⚡ **Des services** : installation, maintenance, accès au plus large réseau de bornes publiques via des partenaires en Europe et en Amérique du Nord\n\n**La promesse e-ABC : \"easy to Always Be Charged\"**  \nL'idée, c'est que tu n'aies plus à te demander *où* ni *comment* recharger. Free2move Charge s'occupe de tout, chez toi comme sur la route.\n\n---\n\n**Pour toi et ta e-208 :**  \nTu peux utiliser **Free2move Charge GO** pour accéder à un réseau ultra-large de bornes publiques partout en Europe, avec un seul compte et une facturation unifiée. Vu que tu fais souvent des trajets pros comme Bordeaux-Paris, ça simplifie vraiment la vie.\n\nTu veux que je te montre comment activer Free2move Charge GO, ou tu préfères des infos sur l'installation d'une borne à domicile ?",
+      "expected_keywords": [
+        "Free2move",
+        "recharge",
+        "électrique"
+      ],
+      "matched_keywords": [
+        "Free2move",
+        "recharge"
+      ],
+      "keyword_score": 0.667,
+      "expected_tools": [
+        "search_stellantis_docs"
+      ],
+      "used_tools": [
+        "search_stellantis_docs"
+      ],
+      "matched_tools": [
+        "search_stellantis_docs"
+      ],
+      "tool_score": 1.0,
+      "global_score": 0.817,
+      "success": true,
+      "latency_sec": 18.419,
+      "metrics": {
+        "tokens_total": 10447,
+        "tokens_input": 9923,
+        "tokens_output": 524,
+        "cout_estime_eur": 0.034619,
+        "nb_appels_tools": 1,
+        "tool_success_rate": 1.0,
+        "avg_llm_latency_sec": 9.019,
+        "avg_tool_latency_sec": 0.373,
+        "nb_erreurs": 0
+      },
+      "errors": []
+    },
+    {
+      "scenario_id": "I1_fidelite",
+      "persona": "Inès",
+      "user_id": "U003",
+      "message": "Montre-moi mes avantages fidélité.",
+      "response": "Super Inès ! Voici où tu en es 🎉\n\n**780 points · Niveau Argent**  \nPlus que **420 points** pour passer au niveau Or et débloquer le **weekend offert Free2move** (2 nuits en hôtel partenaire).\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n**✅ Tes avantages disponibles tout de suite :**\n\n🧼 **Lavage offert**  \n→ Intérieur/extérieur dans tous les garages agréés  \n\n🔧 **Contrôle technique -15€**  \n→ Valable chez Dekra et Autovision partenaires  \n\n⚙️ **Révision -30%**  \n→ Sur ta prochaine révision complète en réseau agréé  \n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n**💡 Comment gagner des points :**  \nTa prochaine révision arrive dans 5200 km, elle te rapportera **+150 points**.\n\nVu que tu prévois un road trip ce weekend, c'est le moment parfait pour profiter de ta **révision à -30%** avant de partir. Tu combines l'utile à l'agréable, et tu passes le cap des 1000 points ! 🚗✨\n\nTu veux que je te trouve un garage agréé Jeep à Paris pour programmer ça ?",
+      "expected_keywords": [
+        "points",
+        "fidélité",
+        "avantages"
+      ],
+      "matched_keywords": [
+        "points",
+        "avantages"
+      ],
+      "keyword_score": 0.667,
+      "expected_tools": [
+        "get_loyalty_dashboard"
+      ],
+      "used_tools": [
+        "get_loyalty_dashboard"
+      ],
+      "matched_tools": [
+        "get_loyalty_dashboard"
+      ],
+      "tool_score": 1.0,
+      "global_score": 0.817,
+      "success": true,
+      "latency_sec": 13.585,
+      "metrics": {
+        "tokens_total": 9811,
+        "tokens_input": 9368,
+        "tokens_output": 443,
+        "cout_estime_eur": 0.031969,
+        "nb_appels_tools": 1,
+        "tool_success_rate": 1.0,
+        "avg_llm_latency_sec": 6.791,
+        "avg_tool_latency_sec": 0.002,
+        "nb_erreurs": 0
+      },
+      "errors": []
+    },
+    {
+      "scenario_id": "I2_offres_anniversaire",
+      "persona": "Inès",
+      "user_id": "U003",
+      "message": "Est-ce que j’ai une offre spéciale aujourd’hui ?",
+      "response": "🎉 **Inès, devine quoi ? C'est un jour spécial !**\n\nAujourd'hui, c'est l'anniversaire de ta Jeep Avenger — **1 an ensemble** ! Et pour fêter ça, j'ai une **offre exclusive** pour toi :\n\n🎁 **Cadeau anniversaire véhicule**  \n→ Un lavage complet offert + 100 points bonus fidélité  \n→ Valable pendant 30 jours (jusqu'au 4 juin)\n\nParfait pour bichonner ta Jeep avant ce road trip en Normandie qu'on avait évoqué, non ? \n\nEt en plus, j'ai repéré quelques autres offres qui pourraient te plaire :\n- **-25% sur le kit accessoires Jeep** (tapis all-weather, protection coffre — pile pour l'aventure)\n- **Road trip Normandie** : pack 2 nuits + borne privée à partir de 149€\n\nEnvie de profiter du lavage offert ? Je peux te trouver un garage partenaire près de chez toi à Paris. 🚗✨",
+      "expected_keywords": [
+        "offre",
+        "anniversaire",
+        "points"
+      ],
+      "matched_keywords": [
+        "offre",
+        "anniversaire",
+        "points"
+      ],
+      "keyword_score": 1.0,
+      "expected_tools": [
+        "get_offers",
+        "get_loyalty_dashboard"
+      ],
+      "used_tools": [
+        "get_offers"
+      ],
+      "matched_tools": [
+        "get_offers"
+      ],
+      "tool_score": 0.5,
+      "global_score": 0.775,
+      "success": true,
+      "latency_sec": 14.771,
+      "metrics": {
+        "tokens_total": 9901,
+        "tokens_input": 9537,
+        "tokens_output": 364,
+        "cout_estime_eur": 0.031345,
+        "nb_appels_tools": 1,
+        "tool_success_rate": 1.0,
+        "avg_llm_latency_sec": 7.378,
+        "avg_tool_latency_sec": 0.002,
+        "nb_erreurs": 0
+      },
+      "errors": []
+    },
+    {
+      "scenario_id": "RAG_mobilisights",
+      "persona": "Camille",
+      "user_id": "U001",
+      "message": "Comment Stellantis utilise les données des véhicules connectés ?",
+      "response": "Hey Camille ! 👋\n\nSuper question — je vais t'expliquer comment Stellantis utilise les données des véhicules connectés de manière simple et transparente.\n\n## 🔐 **Le principe fondamental : ton consentement d'abord**\n\nStellantis collecte et partage les données de ton véhicule **uniquement avec ton accord explicite**. Tu gardes le contrôle, toujours.\n\n## 📊 **Mobilisights : la plateforme de données**\n\nStellantis a créé **Mobilisights**, une filiale dédiée qui centralise les données télématiques de **14 millions de véhicules connectés** à travers les 14 marques du groupe (dont Citroën, Peugeot, Jeep, Fiat, etc.).\n\n### **À quoi servent ces données ?**\n\nElles permettent de créer des **solutions intelligentes** pour améliorer :\n- **La sécurité** (détection d'incidents, alertes préventives)\n- **L'efficacité** (optimisation des trajets, maintenance prédictive)\n- **Ton expérience** (services personnalisés, assistance en temps réel)\n\nMobilisights travaille avec des partenaires pour développer des services comme :\n- Assurances adaptées à ta conduite\n- Gestion de flottes pour professionnels\n- Prévention et assistance routière\n\n## 🎯 **Concrètement pour toi**\n\nLes données de ta C3 (kilométrage, alertes comme ton voyant pression pneu, habitudes de conduite) servent à **te proposer des recommandations personnalisées** : rappels d'entretien au bon moment, bornes de recharge proches si tu passes à l'électrique, offres ciblées.\n\n**Rien n'est utilisé sans que tu aies dit oui.**\n\nTu veux en savoir plus sur un aspect précis, ou voir comment gérer tes préférences de données ?",
+      "expected_keywords": [
+        "données",
+        "véhicule",
+        "consentement",
+        "Mobilisights"
+      ],
+      "matched_keywords": [
+        "données",
+        "véhicule",
+        "consentement",
+        "Mobilisights"
+      ],
+      "keyword_score": 1.0,
+      "expected_tools": [
+        "search_stellantis_docs"
+      ],
+      "used_tools": [
+        "search_stellantis_docs"
+      ],
+      "matched_tools": [
+        "search_stellantis_docs"
+      ],
+      "tool_score": 1.0,
+      "global_score": 1.0,
+      "success": true,
+      "latency_sec": 16.842,
+      "metrics": {
+        "tokens_total": 10516,
+        "tokens_input": 9921,
+        "tokens_output": 595,
+        "cout_estime_eur": 0.035593,
+        "nb_appels_tools": 1,
+        "tool_success_rate": 1.0,
+        "avg_llm_latency_sec": 8.326,
+        "avg_tool_latency_sec": 0.176,
+        "nb_erreurs": 0
+      },
+      "errors": []
+    },
+    {
+      "scenario_id": "RAG_api",
+      "persona": "Sofia",
+      "user_id": "U002",
+      "message": "Quelles données peut fournir l’API véhicule connecté Stellantis ?",
+      "response": "Sofia, bonne question ! L'**API véhicule connecté Stellantis** permet aux développeurs et partenaires d'accéder à de nombreuses données en temps réel issues de véhicules connectés.\n\nVoici ce que l'API peut fournir, selon la documentation officielle :\n\n## **📊 Données principales disponibles**\n\n**Données de base :**\n- **Kilométrage** (odomètre)\n- **Position GPS** et localisation\n- **État du carburant ou de la batterie** (niveau, autonomie)\n- **État du véhicule** (portes, serrures, capot, alarme)\n- **Température** et conditions environnementales\n\n**Données de conduite :**\n- **Accélération** et style de conduite\n- **Historique des trajets**\n- **Comportement routier** (utilisé par exemple pour l'assurance connectée)\n\n**Données pour véhicules électriques :**\n- **État de charge de la batterie** en temps réel\n- **Gestion de la recharge** (via streaming de données)\n- **Optimisation des cycles de charge**\n\n---\n\n## **🔗 Applications concrètes**\n\nCes données sont utilisées par :\n- **Gestionnaires de flottes** → suivi des véhicules, optimisation des opérations\n- **Assureurs connectés** → tarifs personnalisés selon le style de conduite\n- **Fournisseurs de services télématiques** → maintenance prédictive, assistance\n- **Partenaires mobilité électrique** → gestion de la recharge intelligente\n\n---\n\n## **💡 Pour ton e-208**\n\nConcrètement, c'est grâce à cette API que je peux te donner l'état de ta batterie (28% actuellement), ton kilométrage précis (41 200 km), et te recommander les meilleures bornes sur tes trajets pros Bordeaux-Paris.\n\nTu cherches à intégrer ces données dans une application ou un service spécifique ? 🚗⚡",
+      "expected_keywords": [
+        "API",
+        "véhicule",
+        "données",
+        "kilométrage"
+      ],
+      "matched_keywords": [
+        "API",
+        "véhicule",
+        "données",
+        "kilométrage"
+      ],
+      "keyword_score": 1.0,
+      "expected_tools": [
+        "search_stellantis_docs"
+      ],
+      "used_tools": [
+        "search_stellantis_docs",
+        "search_stellantis_docs"
+      ],
+      "matched_tools": [
+        "search_stellantis_docs"
+      ],
+      "tool_score": 1.0,
+      "global_score": 1.0,
+      "success": true,
+      "latency_sec": 22.437,
+      "metrics": {
+        "tokens_total": 17465,
+        "tokens_input": 16764,
+        "tokens_output": 701,
+        "cout_estime_eur": 0.055942,
+        "nb_appels_tools": 2,
+        "tool_success_rate": 1.0,
+        "avg_llm_latency_sec": 7.358,
+        "avg_tool_latency_sec": 0.181,
+        "nb_erreurs": 0
+      },
+      "errors": []
+    },
+    {
+      "scenario_id": "T4_escalade",
+      "persona": "Camille",
+      "user_id": "U001",
+      "message": "Je veux parler à un conseiller humain maintenant.",
+      "response": "Bien sûr, Camille ! Je te mets en contact avec un conseiller Stellantis tout de suite.\n\n**Temps d'attente estimé : 3 minutes**  \n**Référence de ton dossier : STL-U001-202605131714**\n\nLe conseiller aura accès à tout le contexte de notre échange, y compris l'historique de ton voyant de pression des pneus. Tu n'auras pas besoin de tout réexpliquer.\n\nJe reste en ligne pendant la transition. Tu ne repars pas sans réponse. 💙",
+      "expected_keywords": [
+        "conseiller",
+        "contact",
+        "Stellantis"
+      ],
+      "matched_keywords": [
+        "conseiller",
+        "contact",
+        "Stellantis"
+      ],
+      "keyword_score": 1.0,
+      "expected_tools": [
+        "escalate_to_human"
+      ],
+      "used_tools": [
+        "escalate_to_human"
+      ],
+      "matched_tools": [
+        "escalate_to_human"
+      ],
+      "tool_score": 1.0,
+      "global_score": 1.0,
+      "success": true,
+      "latency_sec": 15.722,
+      "metrics": {
+        "tokens_total": 9314,
+        "tokens_input": 8971,
+        "tokens_output": 343,
+        "cout_estime_eur": 0.029493,
+        "nb_appels_tools": 1,
+        "tool_success_rate": 1.0,
+        "avg_llm_latency_sec": 7.86,
+        "avg_tool_latency_sec": 0.0,
+        "nb_erreurs": 0
+      },
+      "errors": []
+    },
+    {
+      "scenario_id": "hors_sujet",
+      "persona": "Camille",
+      "user_id": "U001",
+      "message": "Peux-tu me donner une recette de gâteau au chocolat ?",
+      "response": "Hey Camille ! 😊\n\nJe suis vraiment flattée que tu penses à moi pour ça, mais je dois t'avouer que la pâtisserie, c'est pas du tout mon rayon ! Je suis spécialisée dans tout ce qui touche à ta Citroën C3 et à ta mobilité : entretien, trajets, avantages fidélité, bornes de recharge...\n\nPar contre, ce que je peux faire pour toi aujourd'hui :\n\n**🔧 On pourrait régler ce voyant de pression pneu qui est toujours actif** – je vois que tu n'as pas encore pris le RDV qu'on t'avait proposé la dernière fois. C'est vraiment important pour ta sécurité, surtout avec l'hiver qui arrive à Lyon.\n\nJe peux te trouver un garage agréé Citroën près de chez toi et vérifier si tu as des offres dispo avec tes 320 points fidélité ?\n\nSinon, pour ta recette de gâteau, je te conseille un bon site de cuisine ou même YouTube – tu trouveras des recettes super simples à suivre ! 🍫\n\nQu'est-ce que tu préfères qu'on fasse pour ta C3 ?",
+      "expected_keywords": [
+        "mobilité",
+        "véhicule",
+        "Stellantis"
+      ],
+      "matched_keywords": [
+        "mobilité"
+      ],
+      "keyword_score": 0.333,
+      "expected_tools": [],
+      "used_tools": [],
+      "matched_tools": [],
+      "tool_score": 1.0,
+      "global_score": 0.633,
+      "success": true,
+      "latency_sec": 9.62,
+      "metrics": {
+        "tokens_total": 4652,
+        "tokens_input": 4331,
+        "tokens_output": 321,
+        "cout_estime_eur": 0.016383,
+        "nb_appels_tools": 0,
+        "tool_success_rate": 1.0,
+        "avg_llm_latency_sec": 9.618,
+        "avg_tool_latency_sec": 0,
+        "nb_erreurs": 0
+      },
+      "errors": []
+    }
+  ]
+}

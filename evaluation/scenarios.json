@@ -1,0 +1,82 @@
+[
+  {
+    "scenario_id": "C1_voyant_pneu",
+    "user_id": "U001",
+    "persona": "Camille",
+    "message": "J’ai un voyant allumé sur ma voiture, que dois-je faire ?",
+    "expected_keywords": ["pneu", "pression", "garage"],
+    "expected_tools": ["get_vehicle_status", "get_maintenance_recommendation"]
+  },
+  {
+    "scenario_id": "C2_garage_proche",
+    "user_id": "U001",
+    "persona": "Camille",
+    "message": "Trouve-moi un garage Citroën proche de Lyon.",
+    "expected_keywords": ["garage", "Citroën", "Lyon"],
+    "expected_tools": ["get_partners"]
+  },
+  {
+    "scenario_id": "S1_recharge_batterie",
+    "user_id": "U002",
+    "persona": "Sofia",
+    "message": "Je dois recharger ma voiture rapidement à Bordeaux.",
+    "expected_keywords": ["borne", "recharge", "batterie", "Bordeaux"],
+    "expected_tools": ["get_vehicle_status", "get_charging_recommendation"]
+  },
+  {
+    "scenario_id": "S2_free2move_charge",
+    "user_id": "U002",
+    "persona": "Sofia",
+    "message": "Explique-moi Free2move Charge.",
+    "expected_keywords": ["Free2move", "recharge", "électrique"],
+    "expected_tools": ["search_stellantis_docs"]
+  },
+  {
+    "scenario_id": "I1_fidelite",
+    "user_id": "U003",
+    "persona": "Inès",
+    "message": "Montre-moi mes avantages fidélité.",
+    "expected_keywords": ["points", "fidélité", "avantages"],
+    "expected_tools": ["get_loyalty_dashboard"]
+  },
+  {
+    "scenario_id": "I2_offres_anniversaire",
+    "user_id": "U003",
+    "persona": "Inès",
+    "message": "Est-ce que j’ai une offre spéciale aujourd’hui ?",
+    "expected_keywords": ["offre", "anniversaire", "points"],
+    "expected_tools": ["get_offers", "get_loyalty_dashboard"]
+  },
+  {
+    "scenario_id": "RAG_mobilisights",
+    "user_id": "U001",
+    "persona": "Camille",
+    "message": "Comment Stellantis utilise les données des véhicules connectés ?",
+    "expected_keywords": ["données", "véhicule", "consentement", "Mobilisights"],
+    "expected_tools": ["search_stellantis_docs"]
+  },
+  {
+    "scenario_id": "RAG_api",
+    "user_id": "U002",
+    "persona": "Sofia",
+    "message": "Quelles données peut fournir l’API véhicule connecté Stellantis ?",
+    "expected_keywords": ["API", "véhicule", "données", "kilométrage"],
+    "expected_tools": ["search_stellantis_docs"]
+  },
+  {
+    "scenario_id": "T4_escalade",
+    "user_id": "U001",
+    "persona": "Camille",
+    "message": "Je veux parler à un conseiller humain maintenant.",
+    "expected_keywords": ["conseiller", "contact", "Stellantis"],
+    "expected_tools": ["escalate_to_human"]
+  },
+  {
+    "scenario_id": "hors_sujet",
+    "user_id": "U001",
+    "persona": "Camille",
+    "message": "Peux-tu me donner une recette de gâteau au chocolat ?",
+    "expected_keywords": ["mobilité", "véhicule", "Stellantis"],
+    "expected_tools": []
+  }
+]
