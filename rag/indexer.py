@@ -9,6 +9,7 @@ import json
 import os
 import chromadb
 from chromadb.utils import embedding_functions
+from pypdf import PdfReader
 
 # ──────────────────────────────────────────────
 # CONFIGURATION
@@ -60,24 +61,80 @@ def chunk_text(text: str, chunk_size: int = CHUNK_SIZE, overlap: int = CHUNK_OVE
 # ──────────────────────────────────────────────
 
 def load_documents() -> list[dict]:
-    """Charge tous les fichiers JSON du dossier docs_stellantis."""
+    """Charge les fichiers JSON, PDF et TXT du dossier docs_stellantis."""
     docs = []
 
     if not os.path.exists(DOCS_DIR):
-        print(f"❌ Dossier {DOCS_DIR} introuvable. Lance d'abord scraper.py")
+        print(f"❌ Dossier {DOCS_DIR} introuvable.")
         return docs
 
-    files = [f for f in os.listdir(DOCS_DIR) if f.endswith(".json")]
+    files = [
+        f for f in os.listdir(DOCS_DIR)
+        if f.lower().endswith((".json", ".pdf", ".txt"))
+    ]
+
     print(f"📂 {len(files)} fichiers trouvés dans {DOCS_DIR}")
 
     for filename in files:
         filepath = os.path.join(DOCS_DIR, filename)
+        ext = filename.lower().split(".")[-1]
+
         try:
-            with open(filepath, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-            docs.append(doc)
+            if ext == "json":
+                with open(filepath, "r", encoding="utf-8") as f:
+                    raw = json.load(f)
+
+                # Cas JSON classique avec champ contenu
+                if "contenu" in raw:
+                    docs.append(raw)
+
+                # Cas Swagger / OpenAPI
+                elif "openapi" in raw or "paths" in raw:
+                    text = json.dumps(raw, ensure_ascii=False, indent=2)
+                    docs.append({
+                        "marque": "Stellantis",
+                        "categorie": "api",
+                        "titre": raw.get("info", {}).get("title", filename),
+                        "url": raw.get("servers", [{}])[0].get("url", ""),
+                        "source_type": "official_public",
+                        "contenu": text
+                    })
+
+            elif ext == "pdf":
+                reader = PdfReader(filepath)
+                pages_text = []
+
+                for page_num, page in enumerate(reader.pages, start=1):
+                    text = page.extract_text() or ""
+                    if text.strip():
+                        pages_text.append(f"\n--- Page {page_num} ---\n{text}")
+
+                full_text = "\n".join(pages_text)
+
+                docs.append({
+                    "marque": "Stellantis",
+                    "categorie": "official_pdf",
+                    "titre": filename.replace(".pdf", ""),
+                    "url": filepath,
+                    "source_type": "official_public_pdf",
+                    "contenu": full_text
+                })
+
+            elif ext == "txt":
+                with open(filepath, "r", encoding="utf-8") as f:
+                    text = f.read()
+
+                docs.append({
+                    "marque": "Stellantis",
+                    "categorie": "official_text",
+                    "titre": filename.replace(".txt", ""),
+                    "url": filepath,
+                    "source_type": "official_public_text",
+                    "contenu": text
+                })
+
         except Exception as e:
-            print(f"  ⚠️  Erreur lecture {filename}: {e}")
+            print(f"  ⚠️ Erreur lecture {filename}: {e}")
 
     return docs
 
@@ -171,11 +228,12 @@ def index_documents():
     # Test rapide
     print("\n🧪 Test de recherche sémantique...")
     test_queries = [
-        "voyant pression pneu allumé que faire",
-        "garantie batterie véhicule électrique",
-        "révision entretien Citroën C3",
+        "STLA SmartCockpit logiciel véhicule connecté",
+        "données véhicule connecté Mobilisights kilométrage consentement",
+        "recommandations personnalisées recharge Free2move",
+        "maintenance prédictive IA CloudMade",
+        "API véhicule connecté Stellantis VIN odometer capteurs",
     ]
-
     for query in test_queries:
         results = collection.query(query_texts=[query], n_results=1)
         if results["documents"][0]:

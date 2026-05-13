@@ -1,0 +1,3293 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Stellantis Connected Vehicle API",
+    "description": "Build Applications with Stellantis North America connected Vehicles.\n\nFor former PSA groupe vehicles, please visit https://developer.groupe-psa.io/\n\nTo view these docs SwaggerUI- https://developers.stellantis.com/apidocs.html\n\nTo view these docs ReDoc- https://developers.stellantis.com/docs.html",
+    "contact": {
+      "email": "fca-cloud-api@developers.stellantis.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.8"
+  },
+  "servers": [
+    {
+      "url": "https://api.stellantis-developers.com",
+      "description": "Stellantis Connected Vehicle API"
+    }
+  ],
+  "paths": {
+    "/v1/account": {
+      "get": {
+        "tags": ["Account"],
+        "summary": "Get details of account, showing all linked accounts",
+        "description": "Get details of account including api key, vehicle accounts, owned VINs, geofence collections, and geofencing subscriptions.",
+        "operationId": "getAccount",
+        "responses": {
+          "200": {
+            "description": "Account Details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "403": {
+            "description": "not authorized"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/account/register": {
+      "post": {
+        "tags": ["Account"],
+        "summary": "Request API Credentials",
+        "description": "Request API Account Credentials for Stellantis Cloud API \n",
+        "operationId": "account/register",
+        "requestBody": {
+          "description": "Register",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Credential Request Received",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Your registration could not be processed at this time, please try again later"
+          },
+          "403": {
+            "description": "Account request already received for your_email@domain.com. account status is PENDING APPROVAL"
+          },
+          "409": {
+            "description": "Register",
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/PasswordDoesNotMeetRequirementsReponse"
+
+                  },
+                  {
+                    "$ref": "#/components/schemas/PasswordErrorReponse"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PasswordResetUsernameOrPasswordResponse"
+                  }
+                ]
+              }
+            }
+          }
+          }
+        }
+      }
+    },
+    "/v1/account/link": {
+      "post": {
+        "tags": ["Account"],
+        "summary": "Link an API account to you Connected Vehicle account",
+        "description": "Associate a Stellantis API Account to an existing Jeep, Maserati, Ram, Chrysler, Dodge Connect, Sirius XM Guardian, or Mopar.com connected vehicle account. One API account can be linked to many connected vehicle accounts. Connected vehicle account credentials must be valid and cannot be managed with this API. Your connected vehicle account must be enrolled and have eligible VINs. If subscriptions on an existing VIN are added to or removed from a connected vehicle account, call this API to refresh the linked account.",
+        "operationId": "Link",
+        "requestBody": {
+          "description": "AccountLink",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountLink"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "AccountLinkResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountLinkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "AccountLinkFailure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountLinkFailureResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Account Link Failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountLinkFailureResponseForAccount"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "not authorized"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [],
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/account/unlink": {
+      "post": {
+        "tags": ["Account"],
+        "summary": "Unlink / Remove Connected Vehicle account from API account",
+        "description": "This API reverses the action of /link. VINs associated with the vehicle account being unlinked are removed from your Stellantis API account",
+        "operationId": "unlink",
+        "requestBody": {
+          "description": "Unlink",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Unlink"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "UnlinkResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnlinkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnlinkFailedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "not authorized"
+          },
+          "404": {
+            "description": "bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnlinkFailedNotLinkedResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [],
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/account/setpassword": {
+      "post": {
+        "tags": ["Account"],
+        "summary": "Update API account password",
+        "description": "Update API account password - this API must be called to set a permanent password after registration or a forgotten password reset using /resetpassword",
+        "operationId": "setPassword",
+        "requestBody": {
+          "description": "SetPassword",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetPassword"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SetPasswordResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetPasswordResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                    "$ref": "#/components/schemas/PasswordDoesNotMeetRequirementsReponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PasswordErrorReponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/PasswordResetUsernameOrPasswordResponse"
+                    }
+                  ]
+                  
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "not authorized"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/account/resetpassword": {
+      "post": {
+        "tags": ["Account"],
+        "summary": "Reset password via email",
+        "description": "Reset account password/forgotten password. This API will send a temporary to account email. Note, you must use /setpassword to set a permanent password after using this API",
+        "operationId": "resetpassword",
+        "requestBody": {
+          "description": "ResetPassword",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPassword"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "ResetPasswordResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResetPasswordResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResetPasswordErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "not authorized"
+          },
+          "404": {
+            "description": "bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResetPasswordInvalidAccountResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/account/delete": {
+      "post": {
+        "tags": ["Account"],
+        "summary": "Permanently Delete API account",
+        "description": "This API permanently deletes the API acount. Note that this request cannot be undone. To create a new account use /v1/account/register",
+        "operationId": "accountdelete",
+        "responses": {
+          "200": {
+            "description": "AccountDeleteResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountDeleteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountDeleteErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "not authorized"
+          },
+          "404": {
+            "description": "bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountDeleteNotFoundResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [],
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/auth/token": {
+      "post": {
+        "tags": ["Authorization"],
+        "summary": "Retrieve a bearer token with API credentials",
+        "description": "Retrieve a bearer token with API credentials\n",
+        "operationId": "token",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "header",
+            "description": "user name provided in api credentials",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "header",
+            "description": "password provided in api credentials",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bearer Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthTokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "403": {
+            "description": "Invalid username or password"
+          }
+        }
+      }
+    },
+    "/v1/{vin}/remote": {
+      "post": {
+        "tags": ["Remote Commands"],
+        "summary": "sends remote commands to vehicle",
+        "description": "Remote commands for vehicle. Available commands are START, remote start CANCEL, UNLOCK, LOCK, or HORNS & LIGHTS\n",
+        "operationId": "remote",
+        "parameters": [
+          {
+            "name": "vin",
+            "in": "path",
+            "description": "Vehicle Identification Number",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoteCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Command successfully sent to service delivery platform",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoteCommandResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "403": {
+            "description": "not authorized"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [],
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/{vin}/data/": {
+      "get": {
+        "tags": ["Vehicle Data"],
+        "summary": "retrieves array of recent data sensor values",
+        "description": "Gets vehicle data as an array. Timestamps are based on time collected on vehicle. Sensor array provided for up to last 8 hrs.",
+        "operationId": "data",
+        "parameters": [
+          {
+            "name": "vin",
+            "in": "path",
+            "description": "Vehicle Identification Number",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "data successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "403": {
+            "description": "not authorized"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [],
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/{vin}/data/lastknown": {
+      "get": {
+        "tags": ["Vehicle Data"],
+        "summary": "retrieves last known data sensor values for a vehicle",
+        "description": "Gets vehicle data for a provided sensor. Provides most recent sensor value.",
+        "operationId": "data/lastknown",
+        "parameters": [
+          {
+            "name": "vin",
+            "in": "path",
+            "description": "Vehicle Identification Number",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "data successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataLastKnownResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "403": {
+            "description": "not authorized"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [],
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/feedback": {
+      "post": {
+        "tags": ["Feedback"],
+        "summary": "Submit general feedback, questions, comments to Stellantis.",
+        "description": "Submit general feedback, questions, comments to Stellantis. For bug report, use /bugs",
+        "operationId": "feedback",
+        "requestBody": {
+          "description": "Feedback",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Feedback"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "FeedbackResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedbackResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "403": {
+            "description": "not authorized"
+          }
+        }
+      }
+    },
+    "/v1/bugs": {
+      "post": {
+        "tags": ["Feedback"],
+        "summary": "Submit Bug Report",
+        "description": "Submit Bug Report. For General feedback or questions, use /feedback instead",
+        "operationId": "bugs",
+        "requestBody": {
+          "description": "Bugs",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Bugs"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "BugsResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BugsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          },
+          "403": {
+            "description": "not authorized"
+          }
+        }
+      }
+    },
+    "/v1/geofence-breaches":{
+		  "get":{
+			 "tags":[
+				"Geofence Breaches"
+			 ],
+			 "summary":"Get details of all breach events.",
+			 "description":"Get details of all breach events for vins and geofence collections owned by the user. This data includes the time, breach type (ENTER or EXIT), geofence collection name, geofence ID, Latitude, and Longitude.",
+			 "operationId":"getGeofenceBreaches",
+			 "responses":{
+				"200":{
+				   "description":"Geofence Breach Details",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/GetGeofenceBreachesResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+           "content":{
+					  "application/json":{
+						 "schema":{
+              "oneOf": [
+                {
+                  "$ref":"#/components/schemas/GetGeofenceBreachesNoVINsErrorResponse"
+                },
+                {
+                  "$ref":"#/components/schemas/GetGeofenceBreachesErrorResponse"
+                }
+              ]
+						 }
+					  }
+				   }
+				},
+				"403":{
+				   "description":"not authorized"
+				}
+			 },
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ]
+		  }
+	  },
+    "/v1/geofence-collection":{
+		  "post":{
+			 "tags":[
+				"Geofence Collection"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "summary":"Create geofence collection",
+			 "operationId":"CreateGeofenceCollectionRequest",
+			 "description": "Create a geofence collection by providing fields named collection_name and entries. The geofence collection geometry may be one of Polygon or Circle.",
+			 "requestBody":{
+				"description":"Data about the geofence collection name and points.",
+				"content":{
+				   "application/json":{
+					  "schema":{
+						  "$ref":"#/components/schemas/CreateGeofenceCollectionRequest"
+					  }
+				   }
+				},
+				"required":true
+			 },
+			 "responses":{
+				"200":{
+				   "description":"CreateGeofenceCollectionResponse",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/CreateGeofenceCollectionResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"oneOf": [
+							    {
+							      "$ref":"#/components/schemas/ErrorPerformingOperationResponse"
+							    },
+							    {
+							      "$ref":"#/components/schemas/MaximumGeofenceCollectionEntriesErrorResponse"
+							    },
+							    {
+							      "$ref":"#/components/schemas/MaximumGeofenceCollectionErrorResponse"
+							    }
+							  ]
+						 }
+					  }
+				   }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/ErrorPerformingOperationtryAgainResponse"
+						 }
+					  }
+				   }
+				}
+			 },
+			 "deprecated":false
+		  }
+	   },
+	   "/v1/geofence-collection/{collection}/batch-put-geofence":{
+		  "post":{
+			 "tags":[
+				"Geofence Collection"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "summary":"Batch put geofence in collection",
+			 "description": "Add one or more geofences to an already created geofence collection.",
+			 "operationId":"BatchPutGeofenceInCollectionRequest",
+			 "parameters":[
+				{
+				   "name":"collection",
+				   "in":"path",
+				   "description":"Name of geofence collection",
+				   "required":true,
+				   "style":"simple",
+				   "schema":{
+					  "type":"string"
+				   }
+				}
+			 ],
+			 "requestBody":{
+				"description":"Geofences to add to the geofence collection. The geofence geometry may be Polygon or Circle.",
+				"content":{
+				   "application/json":{
+					  "schema":{
+						 "allOf":[
+							{
+							   "$ref":"#/components/schemas/BatchPutGeofenceInCollectionRequest"
+							}
+						 ]
+					  }
+				   }
+				},
+				"required":true
+			 },
+			 "responses":{
+				"200":{
+				   "description":"BatchPutGeofenceResponse",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/BatchPutGeofenceResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/BatchPutGeofenceErrorMaxGeofencesResponse"
+						 }
+					  }
+				   }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"oneOf": [
+							  {
+							    "$ref":"#/components/schemas/BatchPutGeofenceErrorResponse"
+							  },
+							  {
+							    "$ref":"#/components/schemas/BatchPutGeofenceErrorTryAgainResponse"
+							  }
+							 ]
+						 }
+					  }
+				   }
+				}
+			 },
+			 "deprecated":false
+		  }
+	   },
+	   "/v1/geofence-collection/{collection}/batch-delete-geofence":{
+		  "post":{
+			 "tags":[
+				"Geofence Collection"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "summary":"Batch delete geofence",
+			 "description": "Remove one or more geofences from the geofence collection by providing the IDs os the geofences.",
+			 "operationId":"BatchDeleteGeofence",
+			 "parameters":[
+				{
+				   "name":"collection",
+				   "in":"path",
+				   "description":"The geofence collection name",
+				   "required":true,
+				   "style":"simple",
+				   "explode":false,
+				   "schema":{
+					  "type":"string"
+				   }
+				}
+			 ],
+			 "requestBody":{
+				"description":"List of geofences to remove from geofence collection.",
+				"content":{
+				   "application/json":{
+					  "schema":{
+						 "allOf":[
+							{
+							   "$ref":"#/components/schemas/BatchDeleteGeofenceRequest"
+							}
+						 ]
+					  }
+				   }
+				},
+				"required":true
+			 },
+			 "responses":{
+				"200":{
+				   "description":"BatchDeleteGeofenceResponse",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/BatchDeleteGeofenceResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"oneOf": [
+							  {
+							    "$ref":"#/components/schemas/BatchDeleteGeofenceCollectionNotFoundResponse"
+							  },
+							  {
+							    "$ref":"#/components/schemas/ErrorPerformingOperationResponse"
+							  }
+							 ]
+						 }
+					  }
+				   }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"oneOf": [
+							  {
+							    "$ref":"#/components/schemas/BatchDeleteGeofenceErrorRemovingResponse"
+							  },
+							  {
+							    "$ref":"#/components/schemas/ErrorPerformingOperationtryAgainResponse"
+							  }
+							 ]
+						 }
+					  }
+				   }
+				}
+			 },
+			 "deprecated":false
+		  }
+	   },
+	   "/v1/geofence-collection/{collection}/delete":{
+		  "post":{
+			 "tags":[
+				"Geofence Collection"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "summary":"Delete geofence collection",
+			 "description": "Delete a geofence collection permenantly.",
+			 "operationId":"Deletegeofencecollection",
+			 "parameters":[
+				{
+				   "name":"collection",
+				   "in":"path",
+				   "description":"The geofence collection name",
+				   "required":true,
+				   "style":"simple",
+				   "schema":{
+					  "type":"string"
+				   }
+				}
+			 ],
+			 "responses":{
+				"200":{
+				   "description":"",
+				   "headers":{
+					  
+				   },
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/DeleteGeofenceCollectionResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"oneOf": [
+							  {
+							    "$ref":"#/components/schemas/DeleteGeofenceCollectionNotFoundResponse"
+							  },
+							  {
+							    "$ref":"#/components/schemas/ErrorPerformingOperationtryAgainResponse"
+							  },
+							  {
+							    "$ref":"#/components/schemas/DeleteGeofenceCollectionErrorResponse"
+							  }
+							 ]
+						 }
+					  }
+				   }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/ErrorPerformingOperationtryAgainResponse"
+						 }
+					  }
+				   }
+				   
+				}
+			 },
+			 "deprecated":false
+		  }
+	   },
+	   "/v1/geofencing-notifications/subscription":{
+		  "post":{
+			 "tags":[
+				"Geofencing Notifications"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "summary":"Create a subscription for a vin and a geofence collection.",
+			 "description": "Create a subscription for a vin and its movements in relation to geofences of a collection. Once the subscription is created, you may add subscribers to receive notifications about breach events to those endpoints.",
+			 "operationId":"CreateGeofencingSubscriptionRequest",
+			 "requestBody":{
+				"description":"VIN and geofence collection name.",
+				"content":{
+				   "application/json":{
+					  "schema":{
+						 "allOf":[
+							{
+							   "$ref":"#/components/schemas/CreateGeofencingSubscriptionRequest"
+							}
+						 ]
+					  }
+				   }
+				},
+				"required":true
+			 },
+			 "responses":{
+			   "200":{
+				   "description":"CreateGeofencingSubscriptionExistsResponse",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/CreateGeofencingSubscriptionExistsResponse"
+						 }
+					  }
+				   }
+				},
+				"201":{
+				   "description":"CreateGeofencingSubscriptionResponse",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/CreateGeofencingSubscriptionResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"oneOf": [
+							  {
+							    "$ref":"#/components/schemas/CreateGeofencingSubscriptionAccessDeniedResponse"
+							  },
+							  {
+							    "$ref":"#/components/schemas/ErrorPerformingOperationtryAgainResponse"
+							  }
+							 ]
+						 }
+					  }
+				   }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/CreateGeofencingSubscriptionDatabaseErrorResponse"
+						 }
+					  }
+				   }
+				}
+			 },
+			 "deprecated":false
+		  },
+		  "get":{
+			 "tags":[
+				"Geofencing Notifications"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "parameters":[
+				{
+				   "name":"vin",
+				   "in":"query",
+				   "description":"VIN",
+				   "required":true,
+				   "schema":{
+					  "type":"string"
+				   }
+				},
+				{
+				   "name":"collection_name",
+				   "in":"query",
+				   "description":"Collection name",
+				   "required":true,
+				   "schema":{
+					  "type":"string"
+				   }
+				}
+			 ],
+			 "summary":"Retrieve subscription information for a vin and a geofence collection.",
+			 "description": "Retrieve all information about a particular subscription that tracks movements of a vehicle in relation to a geofence collection.",
+			 "operationId":"GetGeofencingSubscriptionRequest",
+			 "responses":{
+				"200":{
+				   "description":"GetGeofencingSubscriptionResponse",
+				   "headers":{
+					  
+				   },
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/GetGeofencingSubscriptionResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"oneOf": [
+							  {
+							    "$ref":"#/components/schemas/GetGeofencingSubscriptionAccessDeniedResponse"
+							  },
+							  {
+							    "$ref":"#/components/schemas/GetGeofencingSubscriptionNotFoundResponse"
+							  }
+							 ]
+						 }
+					  }
+				   }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error"
+				}
+			 },
+			 "deprecated":false
+		  },
+		  "delete":{
+			 "tags":[
+				"Geofencing Notifications"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "summary":"Delete geofencing subscription for a vin and a geofence collection.",
+			 "description": "Delete a geofencing subscription. This action stops the tracking of a vehicle's movements in and out of a geofence collection.",
+			 "operationId":"DeleteGeofencingSubscriptionRequest",
+			 "requestBody":{
+				"description":"VIN and geofence collection name.",
+				"content":{
+				   "application/json":{
+					  "schema":{
+						 "allOf":[
+							{
+							   "$ref":"#/components/schemas/DeleteGeofencingSubscriptionRequest"
+							}
+						 ]
+					  }
+				   }
+				},
+				"required":true
+			 },
+			 "responses":{
+				"200":{
+				   "description":"DeleteGeofencingSubscriptionResponse",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/DeleteGeofencingSubscriptionResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"oneOf": [
+							  {
+							    "$ref":"#/components/schemas/DeleteGeofencingSubscriptionNotFoundResponse"
+							  },
+							  {
+							    "$ref":"#/components/schemas/DeleteGeofencingSubscriptionErrorResponse"
+							  }
+							 ]
+						 }
+					  }
+				   }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"oneOf": [
+							  {
+							    "$ref":"#/components/schemas/DeleteGeofencingSubscriptionErrorRemovingResponse"
+							  },
+							  {
+							    "$ref":"#/components/schemas/DeleteGeofencingSubscriptionErrorTryAgainResponse"
+							  }
+							 ]
+						 }
+					  }
+				   }
+				}
+			 },
+			 "deprecated":false
+		  }
+	   },
+	   "/v1/geofencing-notifications/subscriptions": {
+      "get": {
+        "tags":[
+				  "Geofencing Notifications"
+			   ],
+        "summary": "Get details of all subscriptions",
+        "description": "Get details ofsubscriptions for your vehicle(s) and geofence collections.",
+        "operationId": "getSubscriptions",
+        "responses": {
+          "200": {
+            "description": "Subscriptions Details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSubscriptionsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSubscriptionsErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "not authorized"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/geofencing-notifications/enable":{
+		  "post":{
+			 "tags":[
+				"Geofencing Notifications"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "summary":"Enable geofencing notifications for a vin and a geofence collection.",
+			 "description": "Enable geofencing notifications for a vin and a geofence collection for all existing subscribers.",
+			 "operationId":"EnableGeofencingNotificationsRequest",
+			 "requestBody":{
+				"description":"VIN and geofence collection name.",
+				"content":{
+				   "application/json":{
+					  "schema":{
+						 "allOf":[
+							{
+							   "$ref":"#/components/schemas/EnableGeofencingNotificationsRequest"
+							}
+						 ]
+					  }
+				   }
+				},
+				"required":true
+			 },
+			 "responses":{
+				"200":{
+				   "description":"EnableGeofencingNotificationsResponse",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/EnableGeofencingNotificationsResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/GeofencingNotificationsNotFoundResponse"
+						 }
+					  }
+				   }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/GeofencingNotificationsErrorResponse"
+						 }
+					  }
+				   }
+				}
+			 },
+			 "deprecated":false
+		  }
+	   },
+	   "/v1/geofencing-notifications/disable":{
+		  "post":{
+			 "tags":[
+				"Geofencing Notifications"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "summary":"Disable geofencing notifications for a vin and a geofence collection.",
+			 "description": "Disable geofencing notifications for a vin and a geofence collection for all existing subscribers.",
+			 "operationId":"DisableGeofencingNotificationsRequest",
+			 "requestBody":{
+				"description":"VIN and geofence collection name.",
+				"content":{
+				   "application/json":{
+					  "schema":{
+						 "allOf":[
+							{
+							   "$ref":"#/components/schemas/DisableGeofencingNotificationsRequest"
+							}
+						 ]
+					  }
+				   }
+				},
+				"required":true
+			 },
+			 "responses":{
+				"200":{
+				   "description":"DisableGeofencingNotificationsResponse",
+				   "headers":{
+					  
+				   },
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/DisableGeofencingNotificationsResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/GeofencingNotificationsNotFoundResponse"
+						 }
+					  }
+				   }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/GeofencingNotificationsErrorResponse"
+						 }
+					  }
+				   }
+				}
+			 },
+			 "deprecated":false
+		  }
+	   },
+	   "/v1/geofencing-notifications/subscribe":{
+		  "post":{
+			 "tags":[
+				"Geofencing Notifications"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "summary":"Subscribe to geofencing notifications for a VIN and geofence collection.",
+			 "description": "Subscribe endpoints such as phone numbers, email addresses, and head unit VINs to geofencing notifications. Subscribed head unit VINs will receive in-vehicle popups with geofence breach information.",
+			 "operationId":"SubscribeToGeofencingNotifcationsRequest",
+			 "requestBody":{
+				"description":"VIN, geofence collection, and endoints that subscribe to the geofencing notifications.",
+				"content":{
+				   "application/json":{
+					  "schema":{
+						 "allOf":[
+							{
+							   "$ref":"#/components/schemas/SubscribeToGeofencingNotifcationsRequest"
+							}
+						 ]
+					  }
+				   }
+				},
+				"required":true
+			 },
+			 "responses":{
+				"200":{
+				   "description":"",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/SubscribeToGeofencingNotifcationsResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/SubscriptionDoesNotExistErrorResponse"
+
+                  },
+                  {
+                    "$ref": "#/components/schemas/SubscriptionNotFoundErrorResponse"
+                  }
+                ]
+              }
+            }
+          }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/ErrorAddingGeofencingSubscriptionsResponse"
+						 }
+					  }
+				   }
+				}
+			 },
+			 "deprecated":false
+		  }
+	   },
+	   "/v1/geofencing-notifications/unsubscribe":{
+		  "post":{
+			 "tags":[
+				"Geofencing Notifications"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "summary":"Unsubscribe from geofencing notifications for a VIN and geofence collection.",
+			 "description": "Unsubscribe endpoints such as phone numbers, email addresses, and head unit VINs from geofencing notifications.",
+			 "operationId":"UnsubscribeFromGeofencingNotifcationsRequest",
+			 "requestBody":{
+				"description":"VIN, geofence collection, and endoints to unsubscribe from the geofencing notifications.",
+				"content":{
+				   "application/json":{
+					  "schema":{
+						 "allOf":[
+							{
+							   "$ref":"#/components/schemas/UnsubscribeFromGeofencingNotifcationsRequest"
+							}
+						 ]
+					  }
+				   }
+				},
+				"required":true
+			 },
+			 "responses":{
+				"200":{
+				   "description":"",
+				   "headers":{
+					  
+				   },
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/UnsubscribeFromGeofencingNotifcationsResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/SubscriptionDoesNotExistErrorResponse"
+
+                  },
+                  {
+                    "$ref": "#/components/schemas/SubscriptionNotFoundErrorResponse"
+                  }
+                ]
+              }
+            }
+          }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/ErrorRemovingGeofencingSubscriptionsResponse"
+						 }
+					  }
+				   }
+				}
+			 },
+			 "deprecated":false
+		  }
+	   },
+	   "/v1/stream/{vin}": {
+		  "post":{
+			 "tags":[
+				"Stream"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "summary":"Add streaming endpoints",
+			 "description": "Define endpoints for where VIN streaming information should be sent to.",
+			 "operationId":"AddStreamingEndpointsRequest",
+			 "parameters": [
+          {
+            "name": "vin",
+            "in": "path",
+            "description": "Vehicle Identification Number",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+			 "requestBody":{
+				"description":"An array of endpoints",
+				"content":{
+				   "application/json":{
+					  "schema":{
+						 "allOf":[
+							{
+							   "$ref":"#/components/schemas/AddStreamingEndpointsRequest"
+							}
+						 ]
+					  }
+				   }
+				},
+				"required":true
+			 },
+			 "responses":{
+			   "200":{
+				   "description":"AddStreamingEndpointsResponse",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/AddStreamingEndpointsResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"oneOf": [
+							  {
+							    "$ref":"#/components/schemas/AddStreamingEndpointsMaxEndpointsErrorResponse"
+							  },
+							  {
+							    "$ref":"#/components/schemas/AddStreamingEndpointsErrorResponse"
+							  }
+							 ]
+						 }
+					  }
+				   }
+				},
+				"401":{
+				   "description":"",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/StreamingEndpointsAccessDeniedResponse"
+						 }
+					  }
+				   }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/ErrorPerformingActionTryAgainLater"
+						 }
+					  }
+				   }
+				}
+			 },
+			 "deprecated":false
+		  },
+		  "get":{
+			 "tags":[
+				"Stream"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "summary":"Retrieve streaming endpoints for the vin's data",
+			 "description": "Retrieve a list of all endpoints where a VIN data in being streamed to.",
+			 "operationId":"GetVINStreamingEndpoints",
+			 "parameters": [
+          {
+            "name": "vin",
+            "in": "path",
+            "description": "Vehicle Identification Number",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+			 "responses":{
+				"200":{
+				   "description":"GetVINStreamingEndpointsResponse",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/GetVINStreamingEndpointsResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							 "$ref":"#/components/schemas/NoStreamingEndpointsResponse"
+						 }
+					  }
+				   }
+				},
+				"401":{
+				   "description":"",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/StreamingEndpointsAccessDeniedResponse"
+						 }
+					  }
+				   }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error"
+				}
+			 },
+			 "deprecated":false
+		  },
+		  "delete":{
+			 "tags":[
+				"Stream"
+			 ],
+			 "security":[
+				{
+				   "ApiKeyAuth":[
+					  
+				   ],
+				   "BearerAuth":[
+					  
+				   ]
+				}
+			 ],
+			 "summary":"Delete information about the VIN streaming endpoints.",
+			 "description": "Remove information about the VIN streaming endpoints. By performing this action, any endpoints previously defined will no longer retrieve streaming information about the VIN.",
+			 "operationId":"DeleteVINStreamingInfoRequest",
+			 "parameters": [
+          {
+            "name": "vin",
+            "in": "path",
+            "description": "Vehicle Identification Number",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+			 "responses":{
+				"200":{
+				   "description":"DeleteVINStreamingInfoResponse",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/DeleteVINStreamingInfoResponse"
+						 }
+					  }
+				   }
+				},
+				"400":{
+				   "description":"bad input parameter",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+					     "$ref":"#/components/schemas/NoStreamingEndpointsResponse"
+						 }
+					  }
+				   }
+				},
+				"401":{
+				   "description":"",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/StreamingEndpointsAccessDeniedResponse"
+						 }
+					  }
+				   }
+				},
+				"403":{
+				   "description":"not authorized"
+				},
+				"500":{
+				   "description":"internal server error",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref": "#/components/schemas/DeleteVINStreamingEndpointErrorResponse"
+						 }
+					  }
+				   }
+				}
+			 },
+			 "deprecated":false
+		  }
+	   },
+	   "/v1/stream/{vin}/remove": {
+      "post": {
+        "tags": ["Stream"],
+        "summary": "Removes an endpoint from the list of endpoints where stream data for the VIN is sent to.",
+        "description": "Removes an endpoint for the vin data streaming.",
+        "operationId": "RemoveVINStreamingEndpoint",
+        "parameters": [
+          {
+            "name": "vin",
+            "in": "path",
+            "description": "Vehicle Identification Number",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveVINStreamingEndpointRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Command successfully sent to service delivery platform",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoveVINStreamingEndpointResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/RemoveVINStreamingEndpointErrorResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/NoStreamingEndpointsResponse"
+                    }  
+                  ]
+                }
+              }
+            }
+          },
+          "401":{
+				   "description":"",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref":"#/components/schemas/StreamingEndpointsAccessDeniedResponse"
+						 }
+					  }
+				   }
+				},
+          "403": {
+            "description": "not authorized"
+          },
+          "500":{
+				   "description":"internal server error",
+				   "content":{
+					  "application/json":{
+						 "schema":{
+							"$ref": "#/components/schemas/ErrorPerformingActionTryAgainLater"
+						 }
+					  }
+				   }
+				}
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [],
+            "BearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AuthTokenResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "example": "eyJraWQiOiJyc2ExIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJhY2JjY2Q..."
+          },
+          "token_type": {
+            "type": "string",
+            "example": "bearer"
+          },
+          "expires_in": {
+            "type": "integer",
+            "example": 3600
+          }
+        }
+      },
+      "RemoteCommand": {
+        "required": ["command", "pin"],
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "example": "START"
+          },
+          "pin": {
+            "type": "integer",
+            "example": 1234
+          }
+        }
+      },
+      "RemoteCommandResponse": {
+        "type": "object",
+        "properties": {
+          "vin": {
+            "type": "string",
+            "example": "3D7UT2CL0BG625027"
+          },
+          "command": {
+            "type": "string",
+            "example": "START"
+          },
+          "result": {
+            "type": "string",
+            "example": "COMMAND SENT"
+          }
+        }
+      },
+      "DataResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/DataResponseinner"
+        }
+      },
+      "DataLastKnownResponse": {
+        "type": "object",
+        "properties": {
+          "vin": {
+            "type": "string",
+            "example": "3D7UT2CL0BG625027"
+          },
+          "data": {
+            "type": "object",
+            "example": "{\"vin\": \"3D7UT2CL0BG625027\", \"value\": \"12532\", \"signal\": \"odometer\", \"timestamp\": \"2020-02-22 19:53:41.071\"}"
+          }
+        }
+      },
+      "GetAccountResponse": {
+        "type": "object",
+        "properties": {
+          "api_account_owner": {
+            "type": "string",
+            "example": "your_email@domain.com"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "First Name"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Last Name"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "123-456-7890"
+          },
+          "usage_description": {
+            "type": "string",
+            "example": "Usage Description"
+          },
+          "account_status": {
+            "type": "string",
+            "example": "APPROVED"
+          },
+          "api_key": {
+            "type": "string",
+            "example": "API_KEY"
+          },
+          "vehicle_accounts": {
+            "type": "object",
+            "example": {
+              "your_connected_account_email@domain.com": {
+                "uids": [
+                  "EXAMPLE_UID"
+                ]
+              }
+            }
+          },
+          "owned_vins": {
+            "type": "object",
+            "example": {
+              "3D7UT2CL0BG625027": {
+                "nickname": "nickname",
+                "uid": "EXAMPLE_UID",
+                "sdp": "IGNITE"
+              }
+            }
+          },
+          "geofence_collections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "collection_name": {
+                  "type": "string",
+                  "example": "collection_name"
+                },
+                "entries": {
+                  "type": "object",
+                  "example": {
+                    "CreateTime": "2024-01-15 18:05:36.544000+00:00",
+                    "GeofenceId": "geofence_id",
+                    "Geometry": {
+                      "Polygon": [
+                        [
+                          -84.94713408143345,
+                          43.38009085676791
+                        ],
+                        [
+                          -84.93943372033695,
+                          43.15714706629157
+                        ],
+                        [
+                          -84.60337504788632,
+                          43.169392182092594
+                        ],
+                        [
+                          -84.61029494482077,
+                          43.38746832635201
+                        ],
+                        [
+                          -84.94554425452868,
+                          43.37938877562664
+                        ]
+                        
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "geofencing_subscriptions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "notifications_enabled": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "vin": {
+                  "type": "string",
+                  "example": "3D7UT2CL0BG625027"
+                },
+                "collection_name": {
+                  "type": "string",
+                  "example": "collection_name"
+                }
+              }
+            }
+          },
+          "tracker": {
+            "type": "string",
+            "example": "tracker_name"
+          }
+        }
+      },
+      "Register": {
+        "required": [
+          "address",
+          "password",
+          "api_account_owner",
+          "first_name",
+          "last_name",
+          "phone_number",
+          "usage_description"
+        ],
+        "type": "object",
+        "properties": {
+          "api_account_owner": {
+            "type": "string",
+            "example": "your_email@domain.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "Your_password!1"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "First"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Last"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "+12484250000"
+          },
+          "address": {
+            "type": "string",
+            "example": "1000 Chrysler Drive, Auburn Hills, MI, 48306"
+          },
+          "usage_description": {
+            "type": "string",
+            "example": "Briefly describe your use case, purpose for requesting access to the API"
+          }
+        }
+      },
+      "RegisterResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "example": "Your account request has been received. You will receive a response via email to the address specified."
+          }
+        }
+      },
+      "PasswordDoesNotMeetRequirementsReponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Error, your password does not meet password requirements (Minimum length 8, 1 upper, 1 lower, one number and one special character)"
+          }
+        }
+      },
+      "PasswordErrorReponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Error, new password could not be set, please try again later"
+          }
+        }
+      },
+      "PasswordResetUsernameOrPasswordResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Error, your user name or current password is invalid"
+          }
+        }
+      },
+      "AccountLink": {
+        "required": ["connected_account_email", "connected_account_password"],
+        "type": "object",
+        "properties": {
+          "connected_account_email": {
+            "type": "string",
+            "example": "your_connected_account_email@domain.com"
+          },
+          "connected_account_password": {
+            "type": "string",
+            "example": "your_connected_account_password"
+          }
+        }
+      },
+      "AccountLinkResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "example": "Account Link Success"
+          },
+          "connected_account_email": {
+            "type": "string",
+            "example": "your_connected_account_email@domain.com"
+          },
+          "vins": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "example": {
+              "3D7UT2CL0BG625027": {
+                "nickname": "nickname",
+                "uid": "EXAMPLE_UID",
+                "sdp": "IGNITE"
+              }
+            }
+            }
+          }
+        }
+      },
+      "AccountLinkFailureResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "example": "Account Link Failure"
+          }
+        }
+      },
+      "AccountLinkFailureResponseForAccount": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "example": "Account Link Failure"
+          },
+          "message": {
+            "type": "string",
+            "example": "Invalid user name or password"
+          }
+        }
+      },
+      "Unlink": {
+        "required": ["connected_account_email"],
+        "type": "object",
+        "properties": {
+          "connected_account_email": {
+            "type": "string",
+            "example": "your_connected_account_email@domain.com"
+          }
+        }
+      },
+      "UnlinkResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "example": "Account Removal Success"
+          },
+          "connected_account_email": {
+            "type": "string",
+            "example": "your_connected_account_email@domain.com"
+          }
+        }
+      },
+      "UnlinkFailedResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "example": "Account Removal Failure"
+          }
+        }
+      },
+      "UnlinkFailedNotLinkedResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "example": "Account vehicle_account@domain.com is not currently linked to your_email@domain.com"
+          }
+        }
+      },
+      "SetPassword": {
+        "required": ["api_account_owner", "current-password", "password"],
+        "type": "object",
+        "properties": {
+          "api_account_owner": {
+            "type": "string",
+            "example": "your_api_account@email.com"
+          },
+          "current-password": {
+            "type": "string",
+            "example": "Your_Current_PW!1"
+          },
+          "password": {
+            "type": "string",
+            "example": "Your_New_PW!1"
+          }
+        }
+      },
+      "SetPasswordResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "New Password Set"
+          }
+        }
+      },
+      "ResetPassword": {
+        "required": ["api_account_owner"],
+        "type": "object",
+        "properties": {
+          "api_account_owner": {
+            "type": "string",
+            "example": "your_api_account_email@domain.com"
+          }
+        }
+      },
+      "ResetPasswordResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Your password has been reset, a temporary password has been sent to your_email@domain.com"
+          }
+        }
+      },
+      "ResetPasswordInvalidAccountResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Error, password could not be reset, invalid api_account_owner."
+          }
+        }
+      },
+      "ResetPasswordErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Error, password could not be reset, please try again later."
+          }
+        }
+      },
+      "AccountDeleteResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "example": "Your account - your_email@domain.com - Has been deleted"
+          }
+        }
+      },
+      "AccountDeleteNotFoundResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "example": "your_email@domain.com - Not Found!"
+          }
+        }
+      },
+      "AccountDeleteErrorResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "example": "Database Error - Database service unavailable, please try again later"
+          }
+        }
+      },
+      "Feedback": {
+        "type": "object",
+        "properties": {
+          "feedback-content": {
+            "type": "string",
+            "example": "Enter your feedback here."
+          }
+        }
+      },
+      "FeedbackResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "example": "Feedback received. Thank you."
+          }
+        }
+      },
+      "Bugs": {
+        "type": "object",
+        "properties": {
+          "feedback-content": {
+            "type": "string",
+            "example": "Enter a detailed description of the issue."
+          }
+        }
+      },
+      "BugsResponse": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "example": "Bug report received. Thank you."
+          }
+        }
+      },
+      "GetGeofenceBreachesResponse":{
+      "type":"object",
+      "properties":{
+       "3D7UT2CL0BG625027":{
+          "type":"array",
+          "items":{
+           "type":"object",
+           "properties":{
+            "event_type":{
+             "type":"string",
+             "example":"ENTER"
+            },
+            "time":{
+             "type":"string",
+             "example":"2023-04-12T18:37:35.948Z"
+            },
+            "lat":{
+             "type":"string",
+             "example":"40.151281"
+            },
+            "long":{
+             "type":"string",
+             "example":"-82.300769"
+            },
+            "geofence_id":{
+             "type":"string",
+             "example":"geofence_id"
+            },
+            "collection_name": {
+              "type": "string",
+              "example": "collection_name"
+            }
+           }
+          }
+       },
+       "3D7UT2CL0BG625026":{
+          "type":"array",
+          "items":{
+           "type":"object"
+          },
+          "example":[
+           
+          ]
+       }
+      }
+     },
+     "GetGeofenceBreachesErrorResponse": {
+      "type": "string",
+      "example": "There was an error retrieving geofence breach information."
+     },
+     "GetGeofenceBreachesNoVINsErrorResponse": {
+      "type": "string",
+      "example": "Error, no vins found for this user (your_email@domain.com)."
+     },
+     "CreateGeofenceCollectionRequest":{
+      "title":"CreateGeofenceCollectionRequest",
+      "required":[
+       "collection_name"
+      ],
+      "type":"object",
+      "properties":{
+       "collection_name":{
+          "type":"string"
+       },
+       "entries":{
+          "type":"array",
+          "items":{
+           "$ref":"#/components/schemas/Entry"
+          },
+          "description":""
+       }
+      },
+      "example":{
+       "collection_name":"collection_name",
+       "entries":[
+          {
+           "GeofenceId":"geofence_id",
+           "Geometry":{
+            "Polygon": [
+                        [
+                          -84.94713408143345,
+                          43.38009085676791
+                        ],
+                        [
+                          -84.93943372033695,
+                          43.15714706629157
+                        ],
+                        [
+                          -84.60337504788632,
+                          43.169392182092594
+                        ],
+                        [
+                          -84.61029494482077,
+                          43.38746832635201
+                        ],
+                        [
+                          -84.94554425452868,
+                          43.37938877562664
+                        ]
+                        
+                      ]
+           }
+          }
+       ]
+      }
+     },
+     "Entry":{
+      "title":"Entry",
+      "required":[
+       "GeofenceId",
+       "Geometry"
+      ],
+      "type":"object",
+      "properties":{
+       "GeofenceId":{
+          "type":"string"
+       },
+       "Geometry":{
+          "$ref":"#/components/schemas/Geometry"
+       }
+      },
+      "example":{
+       "GeofenceId":"geofence_id",
+       "Geometry":{
+          "Polygon": [
+                        [
+                          -84.94713408143345,
+                          43.38009085676791
+                        ],
+                        [
+                          -84.93943372033695,
+                          43.15714706629157
+                        ],
+                        [
+                          -84.60337504788632,
+                          43.169392182092594
+                        ],
+                        [
+                          -84.61029494482077,
+                          43.38746832635201
+                        ],
+                        [
+                          -84.94554425452868,
+                          43.37938877562664
+                        ]
+                        
+                      ]
+       }
+      }
+     },
+     "Geometry":{
+      "title":"Geometry",
+      "required":[
+       "Polygon"
+      ],
+      "type":"object",
+      "properties":{
+       "Polygon":{
+          "type":"array",
+          "items":{
+           "type":"array",
+           "items":{
+            "type":"array",
+            "items":{
+             "type":"number"
+            }
+           }
+          }
+       }
+      },
+      "example":{
+       "Polygon": [
+                        [
+                          -84.94713408143345,
+                          43.38009085676791
+                        ],
+                        [
+                          -84.93943372033695,
+                          43.15714706629157
+                        ],
+                        [
+                          -84.60337504788632,
+                          43.169392182092594
+                        ],
+                        [
+                          -84.61029494482077,
+                          43.38746832635201
+                        ],
+                        [
+                          -84.94554425452868,
+                          43.37938877562664
+                        ]
+                        
+                      ]
+      }
+     },
+     "CreateGeofenceCollectionResponse":{
+      "type":"string",
+      "example":"Geofence collection (collection_name) created successfully."
+     },
+     "ErrorPerformingOperationResponse": {
+       "type": "string",
+       "example": "There was an error performing this operation."
+     },
+     "ErrorPerformingOperationtryAgainResponse": {
+       "type": "string",
+       "example": "There was an error performing this operation. Please try again later."
+     },
+     "MaximumGeofenceCollectionEntriesErrorResponse": {
+       "type": "string",
+       "example": "A maximum of MAX_GEOFENCES_PER_COLLECTION geofences per collection is allowed. You are trying to add (X) geofences to the collection: collection_name."
+     },
+     "MaximumGeofenceCollectionErrorResponse": {
+       "type": "string",
+       "example": "Error occurred while creating the geofence collection. Maximum geofence collection limit MAX_GEOFENCE_COLLECTIONS reached."
+     },
+     "BatchPutGeofenceInCollectionRequest":{
+			 "title":"BatchPutGeofenceInCollectionRequest",
+			 "required":[
+				"entries"
+			 ],
+			 "type":"object",
+			 "properties":{
+				"entries":{
+				   "type":"array",
+				   "items":{
+					  "$ref":"#/components/schemas/Entry2"
+				   },
+				   "description":""
+				}
+			 },
+			 "example":{
+				"entries":[
+				   {
+					  "GeofenceId":"geofence_id",
+					  "Geometry":{
+						 "Circle":{
+							"Center":[
+							   -87.64147148516258,
+							   41.88151660465293
+							],
+							"Radius":1262.5772004365683
+						 }
+					  }
+				   }
+				]
+			 }
+		  },
+		  "Entry2":{
+			 "title":"Entry2",
+			 "required":[
+				"GeofenceId",
+				"Geometry"
+			 ],
+			 "type":"object",
+			 "properties":{
+				"GeofenceId":{
+				   "type":"string"
+				},
+				"Geometry":{
+				   "$ref":"#/components/schemas/Geometry2"
+				}
+			 },
+			 "example":{
+				"GeofenceId":"geofence_id",
+				"Geometry":{
+				   "Circle":{
+					  "Center":[
+						 -87.64147148516258,
+						 41.88151660465293
+					  ],
+					  "Radius":1262.5772004365683
+				   }
+				}
+			 }
+		  },
+		  "Geometry2":{
+			 "title":"Geometry2",
+			 "required":[
+				"Circle"
+			 ],
+			 "type":"object",
+			 "properties":{
+				"Circle":{
+				   "$ref":"#/components/schemas/Circle"
+				}
+			 },
+			 "example":{
+				"Circle":{
+				   "Center":[
+					  -87.64147148516258,
+					  41.88151660465293
+				   ],
+				   "Radius":1262.5772004365683
+				}
+			 }
+		  },
+		  "Circle":{
+			 "title":"Circle",
+			 "required":[
+				"Center",
+				"Radius"
+			 ],
+			 "type":"object",
+			 "properties":{
+				"Center":{
+				   "type":"array",
+				   "items":{
+					  "type":"number"
+				   },
+				   "description":""
+				},
+				"Radius":{
+				   "type":"number"
+				}
+			 },
+			 "example":{
+				"Center":[
+				   -87.64147148516258,
+				   41.88151660465293
+				],
+				"Radius":1262.5772004365683
+			 }
+		  },
+		  "BatchDeleteGeofenceRequest":{
+			 "title":"BatchDeleteGeofenceRequest",
+			 "required":[
+				"geofence_ids"
+			 ],
+			 "type":"object",
+			 "properties":{
+				"geofence_ids":{
+				   "type":"array",
+				   "items":{
+					  "type":"string"
+				   },
+				   "description":""
+				}
+			 },
+			 "example":{
+				"geofence_ids":[
+				   "geofence_id",
+				   "geofence_id2"
+				]
+			 }
+		  },
+		  "BatchPutGeofenceResponse":{
+			 "type":"string",
+			 "example":"Successfully added geofence(s) to geofence collection (collection_name)."
+		  },
+		  "BatchPutGeofenceErrorMaxGeofencesResponse": {
+		    "type": "string",
+		    "example": "Error occurred while adding geofence(s) to the geofence collection (collection_name). Number of final geofences in a collection cannot exceed MAX_GEOFENCES_PER_COLLECTION."
+		  },
+		  "BatchPutGeofenceErrorResponse": {
+		    "type": "string",
+		    "example": "There was an error while adding geofence(s) to the geofence collection."
+		  },
+		  "BatchPutGeofenceErrorTryAgainResponse": {
+		    "type": "string",
+		    "example": "There was an error performing this operation. Please try again later."
+		  },
+		  "BatchDeleteGeofenceResponse":{
+			 "type":"string",
+			 "example":"Successfully deleted geofence(s) from geofence collection (collection_name)."
+		  },
+		  "BatchDeleteGeofenceCollectionNotFoundResponse": {
+		    "type": "string",
+		    "example": "There was an error deleting geofences from the collection (collection_name). This geofence collection was not found."
+		  },
+		  "BatchDeleteGeofenceErrorRemovingResponse": {
+		    "type": "string",
+		    "example": "There was an error while removing the geofence(s) from the geofence collection."
+		  },
+		  "DeleteGeofenceCollectionResponse":{
+			 "type":"string",
+			 "example":"Successfully deleted geofence collection (geofence_collection)."
+		  },
+		  "DeleteGeofenceCollectionNotFoundResponse": {
+		    "type": "string",
+		    "example": "There was an error deleting this geofence collection. This geofence collection was not found."
+		  },
+		  "DeleteGeofenceCollectionErrorResponse": {
+		    "type": "string",
+		    "example": "There was an error deleting the geofence collection (collection_name)."
+		  },
+		  "CreateGeofencingSubscriptionRequest":{
+			 "required":[
+				"vin",
+				"collection_name"
+			 ],
+			 "type":"object",
+			 "properties":{
+				"vin":{
+				   "type":"string",
+				   "example":"3D7UT2CL0BG625027"
+				},
+				"collection_name":{
+				   "type":"string",
+				   "example":"collection_name"
+				}
+			 }
+		  },
+		  "CreateGeofencingSubscriptionResponse":{
+			 "type":"string",
+			 "example":"Success! Subscription created successfully for vin: 3D7UT2CL0BG625027 and geofence collection: collection_name."
+		  },
+		  "CreateGeofencingSubscriptionExistsResponse": {
+		    "type": "string",
+		    "example": "This subscription already exists."
+		  },
+		  "CreateGeofencingSubscriptionAccessDeniedResponse": {
+		    "type": "string",
+		    "example": "Access denied. Either vin, geofence collection, or both are not owned by the user (your_email@domain.com)."
+		  },
+		  "CreateGeofencingSubscriptionDatabaseErrorResponse": {
+		    "type": "string",
+		    "example": "DynamoDB error: error creating subscription."
+		  },
+		  "GetGeofencingSubscriptionResponse":{
+			 "type":"object",
+			 "properties":{
+				"vin":{
+				   "type":"string",
+				   "example":"3D7UT2CL0BG625027"
+				},
+				"collection_name":{
+				   "type":"string",
+				   "example":"collection_name"
+				},
+				"notifications_enabled":{
+				   "type":"boolean",
+				   "example":true
+				},
+				"HU_vin_for_popup":{
+				   "type":"string",
+				   "example":"3D7UT2CL0BG625054"
+				},
+				"phone_number_subscriptions":{
+				   "type":"array",
+				   "items":{
+					  "type":"object",
+					  "properties":{
+						 "phone_number":{
+							"type":"string",
+							"example":"+12345678900"
+						 }
+					  }
+				   }
+				},
+				"email_subscriptions":{
+				   "type":"array",
+				   "items":{
+					  "type":"object",
+					  "properties":{
+						 "email":{
+							"type":"string",
+							"example":"your_email@domain.com"
+						 },
+						 "pending_confirmation":{
+							"type":"string",
+							"example":"false"
+						 }
+					  }
+				   }
+				}
+			 }
+		  },
+		  "GetGeofencingSubscriptionAccessDeniedResponse": {
+		    "type": "string",
+		    "example": "Access denied. Either vin, geofence collection, or both are not owned by the user (your_email@domain.com)."
+		  },
+		  "GetGeofencingSubscriptionNotFoundResponse": {
+		    "type": "string",
+		    "example": "Error: cannot get details for vin: vin and collection name: collection_name."
+		  },
+		  "DeleteGeofencingSubscriptionRequest":{
+			 "required":[
+				"vin",
+				"collection_name"
+			 ],
+			 "type":"object",
+			 "properties":{
+				"vin":{
+				   "type":"string",
+				   "example":"3D7UT2CL0BG625027"
+				},
+				"collection_name":{
+				   "type":"string",
+				   "example":"collection_name"
+				}
+			 }
+		  },
+		  "DeleteGeofencingSubscriptionResponse":{
+			 "type":"string",
+			 "example":"Success! Subscription for vin: 3D7UT2CL0BG625027 and geofence collection: collection_name deleted successfully."
+		  },
+		  "DeleteGeofencingSubscriptionNotFoundResponse": {
+		    "type": "string",
+		    "example": "Error, the subscription information for vin (vin) and geofence collection (collection_name) was not found."
+		  },
+		  "DeleteGeofencingSubscriptionErrorResponse": {
+		    "type": "string",
+		    "example": "Error: please provide a VIN and a collection name."
+		  },
+		  "DeleteGeofencingSubscriptionErrorRemovingResponse": {
+		    "type": "string",
+		    "example": "There was an error removing this subscription detail. Please try again later."
+		  },
+		  "DeleteGeofencingSubscriptionErrorTryAgainResponse": {
+		    "type": "string",
+		    "example": "Error: There was an error deleting this subscription for vin: vin and collection: collection_name. Please try again later."
+		  },
+		  "GetSubscriptionsResponse": {
+		    "type": "object",
+		    "example": {
+		      "3D7UT2CL0BG625027": [
+		        {
+		          "HU_vin_for_popup": null,
+		          "collection_name": "collection_name",
+		          "email_subscriptions": [
+		            {
+		              "email": "your_email@domain.com",
+		              "pending_confirmation": true
+		            }
+		          ],
+		          "notifications_enabled": true,
+		          "phone_number_subscriptions": [
+		            {
+		              "phone_number": "+1 123 456 7890"
+		            }
+		          ]
+		        }
+		      ],
+		      "4D7UT2CL0BG625028": []
+		    }
+		  },
+		  "GetSubscriptionsErrorResponse": {
+		    "type": "string",
+		    "example": "Error, no vins found for this user (your_email@domain.com)."
+		  },
+		  "EnableGeofencingNotificationsRequest":{
+			 "required":[
+				"vin",
+				"collection_name"
+			 ],
+			 "type":"object",
+			 "properties":{
+				"vin":{
+				   "type":"string",
+				   "example":"3D7UT2CL0BG625027"
+				},
+				"collection_name":{
+				   "type":"string",
+				   "example":"collection_name"
+				}
+			 }
+		  },
+		  "EnableGeofencingNotificationsResponse":{
+			 "type":"string",
+			 "example":"Success! Notifications for vin: 3D7UT2CL0BG625027 and geofence collection: collection_name are enabled."
+		  },
+		  "GeofencingNotificationsErrorResponse": {
+		    "type": "string",
+		    "example": "There was an error enabling notifications for vin (3D7UT2CL0BG625027) and collection (collection_name)."
+		  },
+		  "GeofencingNotificationsNotFoundResponse": {
+		    "type": "string",
+		    "example": "Error, the subscription information for vin (3D7UT2CL0BG625027) and geofence collection (collection_name) was not found."
+		  },
+		  "DisableGeofencingNotificationsRequest":{
+			 "required":[
+				"vin",
+				"collection_name"
+			 ],
+			 "type":"object",
+			 "properties":{
+				"vin":{
+				   "type":"string",
+				   "example":"3D7UT2CL0BG625027"
+				},
+				"collection_name":{
+				   "type":"string",
+				   "example":"collection_name"
+				}
+			 }
+		  },
+		  "DisableGeofencingNotificationsResponse":{
+			 "type":"string",
+			 "example":"Success! Notifications for vin: 3D7UT2CL0BG625027 and geofence collection: collection are disabled."
+		  },
+		  "SubscribeToGeofencingNotifcationsRequest":{
+			 "type":"object",
+			 "required":[
+				"vin",
+				"collection_name"
+			 ],
+			 "properties":{
+				"vin":{
+				   "type":"string",
+				   "example":"3D7UT2CL0BG625027"
+				},
+				"collection_name":{
+				   "type":"string",
+				   "example":"collection_name"
+				},
+				"HU_vin_for_popup":{
+				   "type":"string",
+				   "example":"3D7UT2CL0BG625054"
+				},
+				"phone_numbers":{
+				   "type":"array",
+				   "items":{
+					  "type":"string",
+					  "example":"+12345678900"
+				   }
+				},
+				"emails":{
+				   "type":"array",
+				   "items":{
+					  "type":"string",
+					  "example":"your_email@domain.com"
+				   }
+				}
+			 }
+		  },
+		  "SubscribeToGeofencingNotifcationsResponse":{
+			 "type":"string",
+			 "example":"Success! Subscriptions to vin: 3D7UT2CL0BG625027 and geofence collection: collection_name breach event added successfully."
+		  },
+		  "SubscriptionDoesNotExistErrorResponse": {
+		    "type": "string",
+		    "example": "Error: cannot get details for vin: 3D7UT2CL0BG625027 and collection: collection_name. This subscription does not exist."
+		  },
+		  "SubscriptionNotFoundErrorResponse": {
+		    "type": "string",
+		    "example": "Error, the subscription information for vin (3D7UT2CL0BG625027) and geofence collection (collection_name) was not found. Please create a subscription first."
+		  },
+		  "ErrorAddingGeofencingSubscriptionsResponse": {
+		    "type": "string",
+		    "example": "DynamoDB error: error adding subscriptions."
+		  },
+		  "ErrorRemovingGeofencingSubscriptionsResponse": {
+		    "type": "string",
+		    "example": "DynamoDB error: error removing subscriptions."
+		  },
+		  "UnsubscribeFromGeofencingNotifcationsRequest":{
+			 "type":"object",
+			 "required":[
+				"vin",
+				"collection_name"
+			 ],
+			 "properties":{
+				"vin":{
+				   "type":"string",
+				   "example":"3D7UT2CL0BG625027"
+				},
+				"collection_name":{
+				   "type":"string",
+				   "example":"collection_name"
+				},
+				"HU_vin_for_popup":{
+				   "type":"string",
+				   "example":"3D7UT2CL0BG625054"
+				},
+				"phone_numbers":{
+				   "type":"array",
+				   "items":{
+					  "type":"string",
+					  "example":"+12345678900"
+				   }
+				},
+				"emails":{
+				   "type":"array",
+				   "items":{
+					  "type":"string",
+					  "example":"your_email@domain.com"
+				   }
+				}
+			 }
+		  },
+		  "UnsubscribeFromGeofencingNotifcationsResponse":{
+			 "type":"string",
+			 "example":"Success! Subscriptions to vin: 3D7UT2CL0BG625027 and geofence collection: collection_name breach event removed successfully."
+		  },
+		  "AddStreamingEndpointsRequest": {
+		    "type": "object",
+		    "required": [
+		      "endpoints"
+		    ],
+		    "properties": {
+		      "endpoints": {
+		        "type": "array",
+		        "items": {
+		          "type": "string",
+		          "example": [
+		            "STREAMING_ENDPOINT_1",
+		            "STREAMING_ENDPOINT_2"
+		          ]
+		        }
+		      }
+		    }
+		  },
+		  "AddStreamingEndpointsResponse": {
+		    "type": "string",
+		    "example": "Successfully added streaming endpoints for vin (3D7UT2CL0BG625027)."
+		  },
+		  "AddStreamingEndpointsErrorResponse": {
+		    "type": "string",
+		    "example": "There was an error enabling data collection on VIN 3D7UT2CL0BG625027"
+		  },
+		  "AddStreamingEndpointsMaxEndpointsErrorResponse": {
+		    "type": "string",
+		    "example": "An error occurred while trying to add streaming endpoints for the vin (3D7UT2CL0BG625027). Maximum streaming endpoints per vin is MAX_STREAMING_ENDPOINTS."
+		  },
+		  "StreamingEndpointsAccessDeniedResponse": {
+		    "type": "string",
+		    "example": "Access denied. This vin (3D7UT2CL0BG625027) is not owned by the account: your_email@domain.com."
+		  },
+		  "ErrorPerformingActionTryAgainLater": {
+		    "type": "string",
+		    "example": "There was an error performing this action. Please try again later."
+		  },
+		  "GetVINStreamingEndpointsResponse": {
+		    "type": "object",
+		    "properties": {
+		      "endpoints": {
+		        "type": "array",
+		        "items": {
+		          "type": "string",
+		          "example": [
+		            "HTTPS_ENDPOINT_1",
+		            "HTTPS_ENDPOINT_2"
+		          ]
+		        }
+		      },
+		      "vin": {
+		        "type": "string",
+		        "example": "3D7UT2CL0BG625027"
+		      }
+		    }
+		  },
+		  "NoStreamingEndpointsResponse": {
+		    "type": "string",
+		    "example": "There are no streaming endpoints registered for this vin (3D7UT2CL0BG625027)."
+		  },
+		  "DeleteVINStreamingInfoResponse": {
+		    "type": "string",
+		    "example": "Successfully deleted streaming info for the vin (3D7UT2CL0BG625027)."
+		  },
+		  "DeleteVINStreamingEndpointErrorResponse": {
+		    "type": "string",
+		    "example": "There was an error deleting the streaming info for the vin (3D7UT2CL0BG625027). Please try again later."
+		  },
+		  "RemoveVINStreamingEndpointRequest": {
+		    "type": "object",
+		    "properties": {
+		      "endpoint": {
+		        "type": "string",
+		        "example": "STREAMING_ENDPOINT_1"
+		      }
+		    }
+		  },
+		  "RemoveVINStreamingEndpointResponse": {
+		    "type": "string",
+		    "example": "Streaming endpoint (STREAMING_ENDPOINT_1) successfully removed for vin (3D7UT2CL0BG625027)."
+		  },
+		  "RemoveVINStreamingEndpointErrorResponse": {
+		    "type": "string",
+		    "example": "An error occurred. This streaming endpoint (STREAMING_ENDPOINT_3) is not registered for vin (3D7UT2CL0BG625027)."
+		  },
+      "DataResponseinner": {
+        "type": "object",
+        "properties": {
+          "app_timestamp": {
+            "type": "string",
+            "example": "2021-10-31 21:59:06.000"
+          },
+          "data": {
+            "type": "object",
+            "example": "{\"Speedometer\": \"15.0\", \"PowerMode\": \"4\", \"PresentGear\": \"2\",\"SteeringWheelAngle\": \"-6.0\"}"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      },
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "name": "x-api-key",
+        "in": "header"
+      }
+    }
+  },
+  "x-logo": {
+    "url": "https://developers.stellantis.com/stellantis.png",
+    "backgroundColor": "#000",
+    "altText": "Stellantis Developers logo"
+  }
+}

@@ -501,25 +501,27 @@ else:
 
     st.markdown(f'<div class="messages-zone">{msgs_html}</div>', unsafe_allow_html=True)
 
-    # Zone saisie
-    inp_col, btn_col = st.columns([5, 1])
-    with inp_col:
-        user_input = st.text_input(
-            "msg",
-            placeholder="Écris un message à Stella...",
-            label_visibility="collapsed",
-            key=f"inp_{st.session_state.input_key}"
-        )
-    with btn_col:
-        st.markdown('<div class="send-btn">', unsafe_allow_html=True)
-        send = st.button("Envoyer →", use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+   
 
-    if send and user_input.strip():
-        msg = user_input.strip()
-        st.session_state.messages.append({"role": "user", "content": msg})
-        st.session_state.input_key += 1
-        with st.spinner("Stella réfléchit..."):
-            resp = st.session_state.agent.chat(msg)
-        st.session_state.messages.append({"role": "assistant", "content": resp})
-        st.rerun()
+# Zone saisie
+inp_col, btn_col = st.columns([5, 1])
+with inp_col:
+    user_input = st.text_input(
+        "msg",
+        placeholder="Écris un message à Stella...",
+        label_visibility="collapsed",
+        key=f"inp_{st.session_state.input_key}"
+    )
+with btn_col:
+    st.markdown('<div class="send-btn">', unsafe_allow_html=True)
+    send = st.button("Envoyer →", use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+if send and user_input.strip():
+    msg = user_input.strip()
+    st.session_state.messages.append({"role": "user", "content": msg})
+    st.session_state.input_key += 1
+    with st.spinner("Stella réfléchit..."):
+        resp = st.session_state.agent.chat(msg)
+    st.session_state.messages.append({"role": "assistant", "content": resp})
+    st.rerun()

@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 import os
 import json
 import time
+import shutil
 
 # ──────────────────────────────────────────────
 # CONFIGURATION
@@ -34,18 +35,21 @@ SOURCES = [
         "categorie": "fiche_technique",
         "titre": "Citroën C3 — Fiche technique et caractéristiques",
         "url": "https://www.citroen.fr/vehicules-neufs/citroën-c3.html",
+        "source_type": "official_public"
     },
     {
         "marque": "Citroën",
         "categorie": "entretien",
         "titre": "Citroën — Services et entretien",
         "url": "https://www.citroen.fr/services-citroen/entretien-vehicule.html",
+        "source_type": "official_public"
     },
     {
         "marque": "Citroën",
         "categorie": "garantie",
         "titre": "Citroën — Garantie véhicule",
         "url": "https://www.citroen.fr/services-citroen/garantie.html",
+        "source_type": "official_public"
     },
     # ── Peugeot
     {
@@ -53,18 +57,21 @@ SOURCES = [
         "categorie": "fiche_technique",
         "titre": "Peugeot e-208 — Fiche technique électrique",
         "url": "https://www.peugeot.fr/vehicules-neufs/e-208.html",
+        "source_type": "official_public"
     },
     {
         "marque": "Peugeot",
         "categorie": "entretien",
         "titre": "Peugeot — Services et entretien",
         "url": "https://www.peugeot.fr/services/entretien.html",
+        "source_type": "official_public"
     },
     {
         "marque": "Peugeot",
         "categorie": "garantie",
         "titre": "Peugeot — Garantie et assistance",
         "url": "https://www.peugeot.fr/services/garantie.html",
+        "source_type": "official_public"
     },
     # ── Jeep
     {
@@ -72,12 +79,14 @@ SOURCES = [
         "categorie": "fiche_technique",
         "titre": "Jeep Avenger — Caractéristiques techniques",
         "url": "https://www.jeep.fr/vehicules-neufs/avenger.html",
+        "source_type": "official_public"
     },
     {
         "marque": "Jeep",
         "categorie": "garantie",
         "titre": "Jeep — Garantie et service après-vente",
         "url": "https://www.jeep.fr/services/garantie.html",
+        "source_type": "official_public"
     },
     # ── Fiat
     {
@@ -85,6 +94,7 @@ SOURCES = [
         "categorie": "fiche_technique",
         "titre": "Fiat 500 — Caractéristiques et motorisations",
         "url": "https://www.fiat.fr/gamme/500.html",
+        "source_type": "official_public"
     },
     # ── Free2move
     {
@@ -92,12 +102,14 @@ SOURCES = [
         "categorie": "cgu",
         "titre": "Free2move — Conditions générales d'utilisation",
         "url": "https://fr.free2move.com/fr/conditions-generales",
+        "source_type": "official_public"
     },
     {
         "marque": "Free2move",
         "categorie": "entretien",
         "titre": "Free2move Charge — Recharge électrique",
         "url": "https://fr.free2move.com/fr/recharge",
+        "source_type": "official_public"
     },
     # ── Stellantis groupe
     {
@@ -105,7 +117,51 @@ SOURCES = [
         "categorie": "general",
         "titre": "Stellantis — À propos du groupe",
         "url": "https://www.stellantis.com/fr/groupe",
+        "source_type": "official_public"
     },
+    #
+     {
+        "marque": "Stellantis",
+        "categorie": "software",
+        "titre": "Stellantis — STLA Brain et STLA SmartCockpit",
+        "url": "https://www.stellantis.com/en/innovation/intelligent-vehicles-software",
+        "source_type": "official_public"
+    },
+    {
+        "marque": "Mobilisights",
+        "categorie": "data_vehicle",
+        "titre": "Mobilisights — Données véhicule connecté",
+        "url": "https://www.stellantis.com/en/news/press-releases/2024/january/empowering-customers-a-year-of-major-advances-in-mobilisights-mobility-data",
+        "source_type": "official_public"
+    },
+    {
+        "marque": "Free2move",
+        "categorie": "recharge",
+        "titre": "Free2move Charge — Écosystème de recharge",
+        "url": "https://www.stellantis.com/en/news/press-releases/2023/june/charging-your-way-stellantis-launches-free2move-charge-to-make-it-easy-to-always-be-charged",
+        "source_type": "official_public"
+    },
+    {
+        "marque": "Stellantis",
+        "categorie": "api",
+        "titre": "Stellantis Developers — Connected Vehicle API",
+        "url": "https://developers.stellantis.com/docs.html",
+        "source_type": "official_public"
+    },
+    {
+    "marque": "Stellantis",
+    "categorie": "software_strategy",
+    "titre": "Stellantis — Revenus software-enabled vehicles",
+    "url": "https://www.stellantis.com/en/news/press-releases/2021/december/stellantis-targets-20-billion-in-incremental-annual-revenues-by-2030-driven-by-software-enabled-vehicles",
+    "source_type": "official_public"
+    },
+    {
+        "marque": "Stellantis",
+        "categorie": "ai_personalisation",
+        "titre": "Stellantis — CloudMade AI personalization",
+        "url": "https://www.stellantis.com/en/news/press-releases/2024/january/stellantis-to-enhance-personalized-mobility-experience-with-acquisition-of-cloudmade-s-artificial-intelligence-technologies-and-ip",
+        "source_type": "official_public"
+    }
 ]
 
 # ──────────────────────────────────────────────
@@ -488,31 +544,33 @@ SERVICE CLIENT STELLANTIS
 # ──────────────────────────────────────────────
 
 def scrape_url(url: str) -> str | None:
-    """Tente de scraper une URL et retourne le texte nettoyé."""
+    """Scrape une page avec Playwright, utile pour les sites chargés en JavaScript."""
     try:
-        response = requests.get(url, headers=HEADERS, timeout=10)
-        if response.status_code != 200:
-            return None
+        from playwright.sync_api import sync_playwright
 
-        soup = BeautifulSoup(response.content, "html.parser")
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page(
+                user_agent=HEADERS["User-Agent"],
+                locale="fr-FR"
+            )
+            page.goto(url, wait_until="networkidle", timeout=30000)
 
-        # Supprimer les balises inutiles
-        for tag in soup(["script", "style", "nav", "footer", "header",
-                         "iframe", "noscript", "aside", "form"]):
-            tag.decompose()
+            # Tentative accept cookies
+            for label in ["Tout accepter", "Accepter", "Accept all", "I agree"]:
+                try:
+                    page.get_by_text(label, exact=False).click(timeout=2000)
+                    break
+                except Exception:
+                    pass
 
-        # Extraire le texte principal
-        main = soup.find("main") or soup.find("article") or soup.find("div", {"id": "content"})
-        if main:
-            text = main.get_text(separator="\n", strip=True)
-        else:
-            text = soup.get_text(separator="\n", strip=True)
+            text = page.locator("body").inner_text(timeout=10000)
+            browser.close()
 
-        # Nettoyage
-        lines = [l.strip() for l in text.splitlines() if l.strip() and len(l.strip()) > 20]
-        cleaned = "\n".join(lines[:200])  # Max 200 lignes
+        lines = [l.strip() for l in text.splitlines() if l.strip() and len(l.strip()) > 25]
+        cleaned = "\n".join(lines[:250])
 
-        return cleaned if len(cleaned) > 200 else None
+        return cleaned if len(cleaned) > 300 else None
 
     except Exception as e:
         print(f"  ⚠️  Erreur scraping {url}: {e}")
@@ -520,20 +578,23 @@ def scrape_url(url: str) -> str | None:
 
 
 def save_document(doc: dict, content: str):
-    """Sauvegarde un document en JSON dans le dossier docs_stellantis."""
     safe_name = doc["titre"].lower()
     for char in " /\\:*?\"<>|'éèêëàâùûüîïç":
         safe_name = safe_name.replace(char, "_")
     safe_name = safe_name[:60] + ".json"
 
     filepath = os.path.join(OUTPUT_DIR, safe_name)
+
     data = {
         "marque": doc["marque"],
         "categorie": doc["categorie"],
         "titre": doc["titre"],
         "url": doc.get("url", "fallback"),
+        "source_type": doc.get("source_type", "simulated_fallback"),
+        "date_scraping": time.strftime("%Y-%m-%d"),
         "contenu": content,
     }
+
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
@@ -549,6 +610,9 @@ def run_scraper():
     print("  STELLA — Constitution de la base documentaire RAG")
     print("="*55)
     print(f"\nDossier de sortie : {OUTPUT_DIR}\n")
+    if os.path.exists(OUTPUT_DIR):
+        shutil.rmtree(OUTPUT_DIR)
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     saved = 0
     failed = 0
@@ -563,32 +627,29 @@ def run_scraper():
             print(f"     ✅ Sauvegardé ({len(content)} caractères)")
             saved += 1
         else:
-            print(f"     ⚠️  Scraping insuffisant — sera remplacé par fallback")
+            print(f"     ⚠️  Scraping insuffisant — document ignoré")
             failed += 1
         time.sleep(1)  # Politesse serveur
 
     # ── Étape 2 : fallback pour les documents non récupérés
-    print(f"\n📋 Étape 2 — Ajout des {len(FALLBACK_DOCS)} documents de fallback...")
-    for doc in FALLBACK_DOCS:
-        # Vérifier si un fichier existe déjà pour cette marque/catégorie
-        existing = [f for f in os.listdir(OUTPUT_DIR)
-                   if doc["marque"].lower() in f and doc["categorie"].lower() in f]
-        if existing:
-            print(f"  ⏭️  {doc['marque']} | {doc['categorie']} — déjà présent, ignoré")
-            continue
+    USE_FALLBACKS = False
 
-        filepath = save_document(doc, doc["contenu"])
-        print(f"  ✅ {doc['marque']} | {doc['categorie']} — fallback sauvegardé")
-        saved += 1
+    if USE_FALLBACKS:
+        print(f"\n📋 Étape 2 — Ajout des {len(FALLBACK_DOCS)} documents de fallback...")
+        for doc in FALLBACK_DOCS:
+            existing = [f for f in os.listdir(OUTPUT_DIR)
+                        if doc["marque"].lower() in f and doc["categorie"].lower() in f]
+            if existing:
+                continue
+            save_document(doc, doc["contenu"])
 
     # ── Résumé
     all_files = [f for f in os.listdir(OUTPUT_DIR) if f.endswith(".json")]
-    print(f"\n{'='*55}")
     print(f"✅ Base documentaire constituée :")
+    print(f"   {saved} documents officiels sauvegardés")
+    print(f"   {failed} URLs ignorées ou non exploitables")
     print(f"   {len(all_files)} documents disponibles pour le RAG")
     print(f"   Dossier : {OUTPUT_DIR}")
-    print(f"{'='*55}\n")
-    print("👉 Lance maintenant : python indexer.py")
 
 
 if __name__ == "__main__":

@@ -8,6 +8,27 @@ import json
 import os
 from datetime import datetime
 from math import radians, sin, cos, sqrt, atan2
+import chromadb
+from chromadb.utils import embedding_functions
+
+
+# ──────────────────────────────────────────────
+# INITIALISATION RAG GLOBALE
+# ──────────────────────────────────────────────
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CHROMA_PATH = os.path.join(BASE_DIR, "rag", "chroma_db")
+
+EMBEDDING_FUNCTION = embedding_functions.SentenceTransformerEmbeddingFunction(
+    model_name="paraphrase-multilingual-MiniLM-L12-v2"
+)
+
+CHROMA_CLIENT = chromadb.PersistentClient(path=CHROMA_PATH)
+
+RAG_COLLECTION = CHROMA_CLIENT.get_collection(
+    name="stellantis_docs",
+    embedding_function=EMBEDDING_FUNCTION
+)
 
 
 # ──────────────────────────────────────────────
@@ -471,20 +492,18 @@ def get_partners(location: str, type_partenaire: str, marque_vehicule: str = Non
 def search_stellantis_docs(query: str, marque: str = None, categorie_doc: str = None) -> list:
     """
     Recherche sémantique dans la base RAG ChromaDB.
-    En mode simulation (sans ChromaDB initialisé), retourne des réponses fictives.
-    En mode production, interroge la vraie base vectorielle.
     """
     try:
-        import chromadb
-        from sentence_transformers import SentenceTransformer
 
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         chroma_path = os.path.join(base_dir, "rag", "chroma_db")
 
-        client = chromadb.PersistentClient(path=chroma_path)
-        collection = client.get_collection("stellantis_docs")
+        ef = embedding_functions.SentenceTransformerEmbeddingFunction(
+            model_name="paraphrase-multilingual-MiniLM-L12-v2"
+        )
 
-        # Filtres optionnels
+        collection = RAG_COLLECTION
+
         where = {}
         if marque:
             where["marque"] = marque
@@ -493,7 +512,7 @@ def search_stellantis_docs(query: str, marque: str = None, categorie_doc: str = 
 
         results = collection.query(
             query_texts=[query],
-            n_results=3,
+            n_results=5,
             where=where if where else None
         )
 
@@ -505,6 +524,8 @@ def search_stellantis_docs(query: str, marque: str = None, categorie_doc: str = 
             {
                 "contenu": doc,
                 "source": meta.get("source", "Document Stellantis"),
+                "titre": meta.get("titre", "Document Stellantis"),
+                "url": meta.get("url", ""),
                 "marque": meta.get("marque", "Stellantis"),
                 "categorie": meta.get("categorie", "general"),
                 "score_similarite": round(1 - dist, 3)
@@ -512,20 +533,16 @@ def search_stellantis_docs(query: str, marque: str = None, categorie_doc: str = 
             for doc, meta, dist in zip(documents, metadatas, distances)
         ]
 
-    except Exception:
-        # Mode simulation — réponses de fallback
+    except Exception as e:
         return [
             {
-                "contenu": f"Information relative à : {query}. "
-                           f"Pour des informations précises, consultez le site officiel "
-                           f"de votre marque Stellantis ou contactez votre conseiller.",
-                "source": "Base documentaire Stellantis (simulation)",
+                "contenu": f"Erreur RAG : {str(e)}",
+                "source": "Erreur ChromaDB",
                 "marque": marque or "Stellantis",
                 "categorie": categorie_doc or "general",
-                "score_similarite": 0.75
+                "score_similarite": 0
             }
         ]
-
 
 # ──────────────────────────────────────────────
 # TOOL 8 — escalate_to_human
@@ -660,7 +677,7 @@ TOOLS_DEFINITION = [
     },
     {
         "name": "search_stellantis_docs",
-        "description": "Recherche dans la documentation officielle Stellantis : manuels, garanties, fiches techniques, CGU.",
+        "description": "Recherche dans la documentation officielle Stellantis : stratégie software, STLA Brain, SmartCockpit, Mobilisights, Free2move Charge, CloudMade, API véhicule connecté, électrification.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -669,7 +686,7 @@ TOOLS_DEFINITION = [
                 "categorie_doc": {
                     "type": "string",
                     "description": "Type de document (optionnel)",
-                    "enum": ["manuel", "garantie", "fiche_technique", "cgu", "all"]
+                    "enum": ["software", "software_strategy", "ai_personalisation", "data_vehicle", "recharge", "api", "general", "official_pdf", "all"]
                 }
             },
             "required": ["query"]
