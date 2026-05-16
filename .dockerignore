@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env
+.venv
+venv/
+stella_env/
+.git/
+.gitignore
+.streamlit/
+evaluation/results/
+logs/
+*.log
+node_modules/

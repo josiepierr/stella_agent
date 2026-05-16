@@ -1,10 +1,11 @@
 """
 app.py
 Interface Streamlit de Stella — Agent Mobilité Stellantis
-Version corrigée : chat stable, input moderne, mode vocal anti-boucle, conducteur actif en sidebar.
+Version 3 onglets : présentation, démo agent, dashboard ROI.
 """
 
 import streamlit as st
+import streamlit.components.v1 as components
 import sys
 import os
 import json
@@ -389,6 +390,104 @@ st.markdown("""
     border-color:var(--blue-mid) !important;
 }
 
+
+/* PAGES 3 ONGLETS */
+.hero-card {
+    background:white;
+    border-radius:22px;
+    padding:1.6rem;
+    box-shadow:var(--shadow-sm);
+    border:1px solid var(--blue-light);
+    margin-bottom:1rem;
+}
+.hero-title {
+    font-family:'DM Serif Display', serif;
+    font-size:2.2rem;
+    color:var(--grey-1);
+    margin-bottom:0.4rem;
+    line-height:1.1;
+}
+.hero-title span { color:var(--blue-deep); }
+.hero-subtitle {
+    font-size:0.98rem;
+    color:var(--grey-2);
+    line-height:1.6;
+    max-width:950px;
+}
+.feature-grid {
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:14px;
+    margin-top:1rem;
+}
+.feature-card {
+    background:var(--blue-pale);
+    border:1px solid var(--blue-light);
+    border-radius:16px;
+    padding:1rem;
+    min-height:130px;
+}
+.feature-card h4 {
+    margin:0 0 0.35rem;
+    color:var(--grey-1);
+    font-size:0.98rem;
+}
+.feature-card p {
+    margin:0;
+    color:var(--grey-2);
+    font-size:0.82rem;
+    line-height:1.5;
+}
+.demo-note {
+    background:#FFFFFF;
+    border-left:4px solid var(--blue-deep);
+    border-radius:12px;
+    padding:0.9rem 1rem;
+    color:var(--grey-2);
+    margin:0.8rem 0 1rem;
+    box-shadow:var(--shadow-sm);
+    font-size:0.88rem;
+}
+.video-placeholder {
+    background:linear-gradient(135deg,var(--blue-deep),var(--blue-mid));
+    color:white;
+    border-radius:20px;
+    padding:3rem 1.5rem;
+    text-align:center;
+    box-shadow:var(--shadow-sm);
+    margin:1rem 0;
+}
+.video-placeholder h3 { font-size:1.4rem; margin-bottom:0.4rem; }
+.video-placeholder p { opacity:0.82; font-size:0.9rem; }
+@media (max-width: 900px) {
+    .feature-grid { grid-template-columns:1fr; }
+    .cards-grid { grid-template-columns:1fr; }
+}
+
+/* ─────────────────────────────────────────────
+HIDE STREAMLIT TOP BAR
+───────────────────────────────────────────── */
+
+header[data-testid="stHeader"] {
+    display: none !important;
+}
+
+[data-testid="stToolbar"] {
+    display: none !important;
+}
+
+button[kind="header"] {
+    display: none !important;
+}
+
+.stAppToolbar {
+    display: none !important;
+}
+
+[data-testid="stDecoration"] {
+    display: none !important;
+}
+
 #MainMenu, footer { visibility:hidden; }
 .stDeployButton { display:none; }
 </style>
@@ -616,6 +715,186 @@ def render_quick_suggestions():
             st.markdown('</div>', unsafe_allow_html=True)
 
 
+
+# ──────────────────────────────────────────────
+# PAGES — PRÉSENTATION ET ROI
+# ──────────────────────────────────────────────
+
+def render_presentation_page():
+    """Premier onglet : vidéo courte + descriptif de l'agent."""
+    st.markdown("""
+    <div class="hero-card">
+        <div class="hero-title">STELLA — <span>Compagnon mobilité Stellantis</span></div>
+        <div class="hero-subtitle">
+            Stella est un agent conversationnel personnalisé qui accompagne les conductrices Stellantis
+            dans leurs usages quotidiens : entretien, recharge, fidélité, services partenaires,
+            documentation officielle et escalade vers un conseiller humain lorsque nécessaire.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    video_path = os.path.join(BASE_DIR, "assets", "stella_demo.mp4")
+
+    if os.path.exists(video_path):
+        st.video(video_path)
+    else:
+        st.markdown("""
+        <div class="video-placeholder">
+            <h3>🎬 Vidéo de présentation à ajouter</h3>
+            <p>Place une vidéo courte ici : <strong>assets/stella_demo.mp4</strong> · durée recommandée : 45 à 60 secondes.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h4>🔧 Entretien personnalisé</h4>
+            <p>Stella lit l’état du véhicule, explique les voyants, anticipe la révision et recommande une action concrète.</p>
+        </div>
+        <div class="feature-card">
+            <h4>⚡ Recharge intelligente</h4>
+            <p>Pour les véhicules électriques, Stella recommande les bornes proches selon batterie, localisation et compatibilité Free2move.</p>
+        </div>
+        <div class="feature-card">
+            <h4>⭐ Fidélité & offres</h4>
+            <p>L’agent personnalise les avantages, points fidélité, offres anniversaire et services adaptés au profil de la conductrice.</p>
+        </div>
+        <div class="feature-card">
+            <h4>📚 RAG officiel Stellantis</h4>
+            <p>Stella recherche dans une base documentaire construite à partir de sources publiques officielles Stellantis.</p>
+        </div>
+        <div class="feature-card">
+            <h4>👥 Multi-conducteurs</h4>
+            <p>Un compte peut gérer plusieurs conducteurs associés, tout en conservant les avantages liés à la propriétaire.</p>
+        </div>
+        <div class="feature-card">
+            <h4>🧭 Escalade humaine</h4>
+            <p>En cas d’urgence, d’insatisfaction ou de demande explicite, Stella transmet le contexte à un conseiller humain.</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="demo-note">
+        <strong>Architecture :</strong> agent Claude Sonnet avec tool-use, base documentaire RAG ChromaDB,
+        données simulées utilisateurs/véhicules/partenaires/offres, interface Streamlit et option voix STT/TTS.
+    </div>
+    """, unsafe_allow_html=True)
+
+
+def render_roi_page():
+    """Troisième onglet : dashboard ROI HTML intégré."""
+    st.markdown("""
+    <div class="hero-card">
+        <div class="hero-title">Dashboard <span>ROI</span></div>
+        <div class="hero-subtitle">
+            Ce tableau présente une projection économique prudente : coût moyen de Stella,
+            taux de déflexion, part des demandes substituables, coûts humains évités et économies nettes.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    candidates = [
+        os.path.join(BASE_DIR, "stella_roi_dashboard_credible.html"),
+        os.path.join(BASE_DIR, "stella_roi_dashboard_corrected.html"),
+        os.path.join(BASE_DIR, "stella_roi_dashboard.html"),
+    ]
+
+    roi_path = next((p for p in candidates if os.path.exists(p)), None)
+
+    if roi_path is None:
+        st.warning("Dashboard ROI introuvable. Place `stella_roi_dashboard_credible.html` à la racine du projet.")
+        return
+
+    with open(roi_path, "r", encoding="utf-8") as f:
+        html_content = f.read()
+
+    components.html(html_content, height=1150, scrolling=True)
+
+
+def render_agent_demo_page(user: dict, vehicle: dict, voyants: list):
+    """Deuxième onglet : démo agent, identique au chat existant."""
+    active_display_name = get_active_driver_name(user)
+
+    st.markdown(f"""
+    <div class="chat-header">
+        <div class="chat-avatar-hdr">🌟</div>
+        <div>
+            <div class="chat-hdr-title">Stella</div>
+            <div class="chat-hdr-sub">
+                <span class="online-dot"></span>En ligne · {active_display_name}
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if st.session_state.pending_sugg:
+        msg = st.session_state.pending_sugg
+        st.session_state.pending_sugg = None
+        ask_stella(msg)
+        st.rerun()
+
+    render_messages(user, vehicle, voyants, active_display_name)
+
+    if (
+        VOICE_AVAILABLE
+        and st.session_state.get("voice_enabled")
+        and st.session_state.get("last_audio_response")
+    ):
+        st.audio(st.session_state.last_audio_response, format="audio/mp3")
+        if st.session_state.get("last_audio_text"):
+            st.caption("🔊 Dernière réponse vocale disponible.")
+
+    if not st.session_state.messages:
+        render_profile_cards(user, vehicle)
+        render_quick_suggestions()
+
+    st.markdown('<div class="input-wrapper">', unsafe_allow_html=True)
+
+    voice_payload = None
+
+    if VOICE_AVAILABLE and st.session_state.get("voice_enabled"):
+        col_voice, col_input, col_send = st.columns([0.9, 5.2, 1.2])
+    else:
+        col_input, col_send = st.columns([5.2, 1.2])
+        col_voice = None
+
+    if col_voice is not None:
+        with col_voice:
+            st.markdown('<div class="voice-box">', unsafe_allow_html=True)
+            voice_payload = render_voice_input()
+            st.markdown('</div>', unsafe_allow_html=True)
+
+    with col_input:
+        user_input = st.text_input(
+            "Message",
+            placeholder="Écris un message à Stella...",
+            label_visibility="collapsed",
+            key=f"chat_input_{st.session_state.input_key}"
+        )
+
+    with col_send:
+        st.markdown('<div class="send-btn">', unsafe_allow_html=True)
+        send_clicked = st.button("Envoyer →", use_container_width=True, key="send_btn")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    if voice_payload:
+        voice_text = voice_payload.get("text", "").strip()
+        voice_hash = voice_payload.get("hash")
+
+        if voice_text and voice_hash and voice_hash != st.session_state.last_voice_hash:
+            st.session_state.last_voice_hash = voice_hash
+            ask_stella(voice_text)
+            st.rerun()
+
+    if send_clicked and user_input.strip():
+        ask_stella(user_input.strip())
+        st.session_state.input_key += 1
+        st.rerun()
+
+
 # ──────────────────────────────────────────────
 # SESSION STATE
 # ──────────────────────────────────────────────
@@ -828,100 +1107,20 @@ with st.sidebar:
 
 
 # ──────────────────────────────────────────────
-# MAIN
+# MAIN — SITE À 3 ONGLETS
 # ──────────────────────────────────────────────
 
-active_display_name = get_active_driver_name(user)
+tab_intro, tab_demo, tab_roi = st.tabs([
+    "🎬 Présentation",
+    "💬 Démo Stella",
+    "📊 Dashboard ROI",
+])
 
-st.markdown(f"""
-<div class="chat-header">
-    <div class="chat-avatar-hdr">🌟</div>
-    <div>
-        <div class="chat-hdr-title">Stella</div>
-        <div class="chat-hdr-sub">
-            <span class="online-dot"></span>En ligne · {active_display_name}
-        </div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+with tab_intro:
+    render_presentation_page()
 
-if st.session_state.pending_sugg:
-    msg = st.session_state.pending_sugg
-    st.session_state.pending_sugg = None
-    ask_stella(msg)
-    st.rerun()
+with tab_demo:
+    render_agent_demo_page(user, vehicle, voyants)
 
-render_messages(user, vehicle, voyants, active_display_name)
-
-if (
-    VOICE_AVAILABLE
-    and st.session_state.get("voice_enabled")
-    and st.session_state.get("last_audio_response")
-):
-    st.audio(st.session_state.last_audio_response, format="audio/mp3")
-    if st.session_state.get("last_audio_text"):
-        st.caption("🔊 Dernière réponse vocale disponible.")
-
-if not st.session_state.messages:
-    render_profile_cards(user, vehicle)
-    render_quick_suggestions()
-
-
-# ──────────────────────────────────────────────
-# INPUT CHAT — STYLE MODERNE, STABLE
-# ──────────────────────────────────────────────
-
-st.markdown('<div class="input-wrapper">', unsafe_allow_html=True)
-
-voice_payload = None
-
-if VOICE_AVAILABLE and st.session_state.get("voice_enabled"):
-    col_voice, col_input, col_send = st.columns([0.9, 5.2, 1.2])
-else:
-    col_input, col_send = st.columns([5.2, 1.2])
-    col_voice = None
-
-if col_voice is not None:
-    with col_voice:
-        st.markdown('<div class="voice-box">', unsafe_allow_html=True)
-        voice_payload = render_voice_input()
-        st.markdown('</div>', unsafe_allow_html=True)
-
-with col_input:
-    user_input = st.text_input(
-        "Message",
-        placeholder="Écris un message à Stella...",
-        label_visibility="collapsed",
-        key=f"chat_input_{st.session_state.input_key}"
-    )
-
-with col_send:
-    st.markdown('<div class="send-btn">', unsafe_allow_html=True)
-    send_clicked = st.button("Envoyer →", use_container_width=True, key="send_btn")
-    st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
-
-
-# ──────────────────────────────────────────────
-# TRAITEMENT MESSAGE VOCAL
-# ──────────────────────────────────────────────
-
-if voice_payload:
-    voice_text = voice_payload.get("text", "").strip()
-    voice_hash = voice_payload.get("hash")
-
-    if voice_text and voice_hash and voice_hash != st.session_state.last_voice_hash:
-        st.session_state.last_voice_hash = voice_hash
-        ask_stella(voice_text)
-        st.rerun()
-
-
-# ──────────────────────────────────────────────
-# TRAITEMENT MESSAGE TEXTE
-# ──────────────────────────────────────────────
-
-if send_clicked and user_input.strip():
-    ask_stella(user_input.strip())
-    st.session_state.input_key += 1
-    st.rerun()
+with tab_roi:
+    render_roi_page()
