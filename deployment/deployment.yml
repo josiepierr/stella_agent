@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stella-deployment
+  labels:
+    app: stella
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stella
+  template:
+    metadata:
+      labels:
+        app: stella
+    spec:
+      containers:
+        - name: stella
+          image: ghcr.io/josiepierr/stella-agent:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8501
+          env:
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stella-secrets
+                  key: ANTHROPIC_API_KEY
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stella-secrets
+                  key: OPENAI_API_KEY

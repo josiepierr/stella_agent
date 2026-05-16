@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stella-service
+spec:
+  selector:
+    app: stella
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8501
