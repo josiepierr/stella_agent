@@ -7,5 +7,5 @@ requests            # appels HTTP
 python-dotenv       # gestion des clés API
 sentence-transformers # embeddings pour ChromaDB
 playwright           # scraping dynamique 
-pypdf2               # extraction de texte de PDF
-torchvision            # pour les modèles de vision (si besoin)
+pypdf                # extraction de texte de PDF
+torchvision          # pour les modèles de vision (si besoin)

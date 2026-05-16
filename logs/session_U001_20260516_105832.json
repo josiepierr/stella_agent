@@ -1,0 +1,135 @@
+{
+  "session_id": "U001_20260516_105832",
+  "timestamp": "2026-05-16T10:58:41.130293",
+  "model": "claude-sonnet-4-5",
+  "user": {
+    "user_id": "U001",
+    "prenom": "Camille",
+    "persona_type": "camille"
+  },
+  "vehicle": {
+    "marque": "Citroën",
+    "modele": "C3",
+    "motorisation": "thermique"
+  },
+  "metrics": {
+    "session_id": "U001_20260516_105832",
+    "user_id": "U001",
+    "prenom": "Camille",
+    "duree_session_sec": 9.1,
+    "nb_tours_conversation": 1,
+    "nb_appels_tools": 1,
+    "nb_tools_success": 1,
+    "nb_tools_failed": 0,
+    "tool_success_rate": 1.0,
+    "tokens_input": 9172,
+    "tokens_output": 327,
+    "tokens_total": 9499,
+    "cout_estime_usd": 0.032421,
+    "cout_estime_eur": 0.029827,
+    "avg_llm_latency_sec": 4.547,
+    "avg_tool_latency_sec": 0.004,
+    "nb_erreurs": 0,
+    "tool_history": [
+      {
+        "turn": 1,
+        "iteration": 1,
+        "tool": "escalate_to_human",
+        "input": {
+          "user_id": "U001",
+          "reason": "demande_explicite",
+          "conversation_summary": "Camille demande explicitement à parler à un conseiller humain. Contexte : Voyant pression pneu actif sur sa Citroën C3 2021 (28400 km). Lors de la dernière session, explication du voyant fournie et RDV proposé mais non pris. Camille souhaite maintenant un contact humain direct."
+        },
+        "success": true,
+        "latency_sec": 0.004,
+        "error": null
+      }
+    ],
+    "errors": []
+  },
+  "conversation_history": [
+    {
+      "role": "user",
+      "content": "Je veux parler à un conseiller humain maintenant."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01S6dbTsqZnFqGC4huyRLQX9",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "user_id": "U001",
+            "reason": "demande_explicite",
+            "conversation_summary": "Camille demande explicitement à parler à un conseiller humain. Contexte : Voyant pression pneu actif sur sa Citroën C3 2021 (28400 km). Lors de la dernière session, explication du voyant fournie et RDV proposé mais non pris. Camille souhaite maintenant un contact humain direct."
+          },
+          "name": "escalate_to_human",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "toolu_01S6dbTsqZnFqGC4huyRLQX9",
+          "content": "{\n  \"escalade_confirmee\": true,\n  \"canal\": \"chat_live\",\n  \"temps_attente_estime_min\": 3,\n  \"conseiller_disponible\": true,\n  \"message_transition\": \"Bien sûr ! Je te mets en contact avec un conseiller. Il aura tout le contexte de notre échange.\",\n  \"reference_dossier\": \"STL-U001-202605161058\"\n}"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Camille, je te transfère tout de suite vers un conseiller Stellantis. \n\n**Temps d'attente estimé : 3 minutes**  \n**Référence de ton dossier : STL-U001-202605161058**\n\nLe conseiller aura accès à toutes nos échanges, y compris le voyant de pression pneu actif sur ta C3. Tu n'auras pas besoin de tout réexpliquer. \n\nJe reste en ligne avec toi pendant la connexion. Tu es entre de bonnes mains ! 🙂",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "turn_history": [
+    {
+      "turn": 1,
+      "timestamp": "2026-05-16T10:58:32.031354",
+      "user_message": "Je veux parler à un conseiller humain maintenant.",
+      "tools_called": [
+        {
+          "turn": 1,
+          "iteration": 1,
+          "tool": "escalate_to_human",
+          "input": {
+            "user_id": "U001",
+            "reason": "demande_explicite",
+            "conversation_summary": "Camille demande explicitement à parler à un conseiller humain. Contexte : Voyant pression pneu actif sur sa Citroën C3 2021 (28400 km). Lors de la dernière session, explication du voyant fournie et RDV proposé mais non pris. Camille souhaite maintenant un contact humain direct."
+          },
+          "success": true,
+          "latency_sec": 0.004,
+          "error": null
+        }
+      ],
+      "llm_calls": [
+        {
+          "iteration": 1,
+          "stop_reason": "tool_use",
+          "latency_sec": 4.183,
+          "input_tokens": 4433,
+          "output_tokens": 186
+        },
+        {
+          "iteration": 2,
+          "stop_reason": "end_turn",
+          "latency_sec": 4.912,
+          "input_tokens": 4739,
+          "output_tokens": 141
+        }
+      ],
+      "final_response": "Camille, je te transfère tout de suite vers un conseiller Stellantis. \n\n**Temps d'attente estimé : 3 minutes**  \n**Référence de ton dossier : STL-U001-202605161058**\n\nLe conseiller aura accès à toutes nos échanges, y compris le voyant de pression pneu actif sur ta C3. Tu n'auras pas besoin de tout réexpliquer. \n\nJe reste en ligne avec toi pendant la connexion. Tu es entre de bonnes mains ! 🙂",
+      "success": true,
+      "latency_sec": 9.099
+    }
+  ]
+}

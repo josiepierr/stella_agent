@@ -1,0 +1,418 @@
+{
+  "session_id": "U001_20260513_215043",
+  "timestamp": "2026-05-13T22:00:08.455791",
+  "model": "claude-sonnet-4-5",
+  "user": {
+    "user_id": "U001",
+    "prenom": "Camille",
+    "persona_type": "camille"
+  },
+  "vehicle": {
+    "marque": "Citroën",
+    "modele": "C3",
+    "motorisation": "thermique"
+  },
+  "metrics": {
+    "session_id": "U001_20260513_215043",
+    "user_id": "U001",
+    "prenom": "Camille",
+    "duree_session_sec": 328.6,
+    "nb_tours_conversation": 6,
+    "nb_appels_tools": 3,
+    "nb_tools_success": 3,
+    "nb_tools_failed": 0,
+    "tool_success_rate": 1.0,
+    "tokens_input": 55304,
+    "tokens_output": 1946,
+    "tokens_total": 57250,
+    "cout_estime_usd": 0.195102,
+    "cout_estime_eur": 0.179494,
+    "avg_llm_latency_sec": 6.241,
+    "avg_tool_latency_sec": 0.004,
+    "nb_erreurs": 0,
+    "tool_history": [
+      {
+        "turn": 1,
+        "iteration": 1,
+        "tool": "get_loyalty_dashboard",
+        "input": {
+          "user_id": "U001"
+        },
+        "success": true,
+        "latency_sec": 0.0,
+        "error": null
+      },
+      {
+        "turn": 2,
+        "iteration": 1,
+        "tool": "get_partners",
+        "input": {
+          "location": "Lyon",
+          "type_partenaire": "garage_agree",
+          "marque_vehicule": "Citroën"
+        },
+        "success": true,
+        "latency_sec": 0.002,
+        "error": null
+      },
+      {
+        "turn": 6,
+        "iteration": 1,
+        "tool": "escalate_to_human",
+        "input": {
+          "user_id": "U001",
+          "reason": "insatisfaction",
+          "conversation_summary": "Camille demande de façon répétée (5 fois) à voir un garage à côté de chez elle à Lyon. J'ai fourni l'adresse de Citroën Lyon Confluence (2,5 km, Lyon 2) à plusieurs reprises avec tous les détails (horaires, services, RDV disponible). Elle continue de reformuler exactement la même demande sans préciser ce qui ne convient pas. Possible incompréhension ou besoin d'aide humaine pour clarifier sa demande réelle."
+        },
+        "success": true,
+        "latency_sec": 0.011,
+        "error": null
+      }
+    ],
+    "errors": []
+  },
+  "conversation_history": [
+    {
+      "role": "user",
+      "content": "Montre-moi mes avantages fidélité."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01BoWW1igLvkLVReAdGht1xu",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "user_id": "U001"
+          },
+          "name": "get_loyalty_dashboard",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "toolu_01BoWW1igLvkLVReAdGht1xu",
+          "content": "{\n  \"prenom\": \"Camille\",\n  \"points_actuels\": 320,\n  \"niveau\": \"Argent\",\n  \"prochain_niveau\": \"Or\",\n  \"points_pour_niveau_suivant\": 380,\n  \"avantages\": [\n    {\n      \"titre\": \"Lavage offert\",\n      \"points_requis\": 200,\n      \"deja_debloque\": true,\n      \"description\": \"Lavage intérieur/extérieur dans tout réseau agréé\"\n    },\n    {\n      \"titre\": \"Contrôle technique -15€\",\n      \"points_requis\": 350,\n      \"deja_debloque\": false,\n      \"description\": \"Valable dans les centres Dekra et Autovision partenaires\"\n    },\n    {\n      \"titre\": \"Révision -30%\",\n      \"points_requis\": 700,\n      \"deja_debloque\": false,\n      \"description\": \"Sur la prochaine révision complète en réseau agréé\"\n    },\n    {\n      \"titre\": \"Weekend offert Free2move\",\n      \"points_requis\": 1200,\n      \"deja_debloque\": false,\n      \"description\": \"2 nuits dans un hôtel partenaire Free2move\"\n    }\n  ],\n  \"avantages_disponibles\": [\n    {\n      \"titre\": \"Lavage offert\",\n      \"points_requis\": 200,\n      \"deja_debloque\": true,\n      \"description\": \"Lavage intérieur/extérieur dans tout réseau agréé\"\n    }\n  ],\n  \"historique_recent\": [\n    {\n      \"date\": \"2026-04-01\",\n      \"action\": \"explication_voyant\",\n      \"points\": \"+50\"\n    }\n  ],\n  \"prochain_gain\": \"Passe ta prochaine révision et gagne 150 points !\"\n}"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Super Camille, voici où tu en es ! 🎉\n\n## Ton compte fidélité\n\n**Tu as 320 points** — Niveau **Argent**  \nPlus que **380 points** pour passer **Or** et débloquer encore plus d'avantages.\n\n---\n\n### 🎁 **Disponible maintenant :**\n\n✅ **Lavage offert**  \n→ Lavage intérieur/extérieur dans tout réseau agréé Citroën  \n*C'est débloqué, tu peux en profiter quand tu veux !*\n\n---\n\n### 🔒 **Prochains avantages à débloquer :**\n\n- **Contrôle technique -15€** → Il te manque 30 points  \n  Valable chez Dekra et Autovision partenaires\n\n- **Révision -30%** → 380 points à accumuler  \n  Sur ta prochaine révision complète en réseau agréé\n\n- **Weekend offert Free2move** → 880 points à accumuler  \n  2 nuits dans un hôtel partenaire\n\n---\n\n### 💡 **Comment gagner des points rapidement ?**\n\nTa prochaine révision te rapportera **150 points** !  \nAvec ton kilométrage actuel (28 400 km), elle arrive dans 1 600 km.\n\n**Ton avantage lavage est actif.** Tu veux que je te trouve un garage agréé près de Lyon pour en profiter ?",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "Bonjour Stella, je veux voir un garage à côté de chez moi."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01GQT6q53xoFaYWTeD3yjDVa",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "location": "Lyon",
+            "type_partenaire": "garage_agree",
+            "marque_vehicule": "Citroën"
+          },
+          "name": "get_partners",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "toolu_01GQT6q53xoFaYWTeD3yjDVa",
+          "content": "[\n  {\n    \"partner_id\": \"P001\",\n    \"nom\": \"Citroën Lyon Confluence\",\n    \"adresse\": \"45 cours Charlemagne, Lyon 2\",\n    \"ville\": \"Lyon\",\n    \"distance_km\": 2.5,\n    \"note_client\": 4.7,\n    \"telephone\": \"04 72 41 XX XX\",\n    \"disponibilite_rdv\": \"2026-05-08\",\n    \"horaires\": \"Lun-Ven 8h-18h, Sam 9h-12h\",\n    \"services\": [\n      \"revision\",\n      \"pneus\",\n      \"freins\",\n      \"climatisation\",\n      \"ct_partenaire\"\n    ],\n    \"lien_rdv\": \"https://www.citroen.fr/rdv\",\n    \"borne_recharge_parking\": null,\n    \"prix_nuit_base\": null,\n    \"remise_free2move_pct\": null\n  },\n  {\n    \"partner_id\": \"P002\",\n    \"nom\": \"Peugeot Bordeaux Lac\",\n    \"adresse\": \"12 avenue du Lac, Bordeaux\",\n    \"ville\": \"Bordeaux\",\n    \"distance_km\": 434.8,\n    \"note_client\": 4.5,\n    \"telephone\": \"05 56 XX XX XX\",\n    \"disponibilite_rdv\": \"2026-05-07\",\n    \"horaires\": \"Lun-Ven 8h-18h30\",\n    \"services\": [\n      \"revision_electrique\",\n      \"batterie\",\n      \"recharge_rapide\",\n      \"mise_a_jour_logiciel\"\n    ],\n    \"lien_rdv\": \"https://www.peugeot.fr/rdv\",\n    \"borne_recharge_parking\": null,\n    \"prix_nuit_base\": null,\n    \"remise_free2move_pct\": null\n  }\n]"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Salut Camille ! 👋\n\nVoici le **garage agréé Citroën le plus proche** de chez toi à Lyon :\n\n---\n\n### 🔧 **Citroën Lyon Confluence**\n\n📍 45 cours Charlemagne, Lyon 2  \n📏 **2,5 km** de chez toi  \n⭐ **4,7/5** — Très bien noté  \n📞 04 72 41 XX XX\n\n**Horaires :**  \nLun-Ven 8h-18h | Sam 9h-12h\n\n**Services disponibles :**  \n✅ Révision complète  \n✅ Pneus (parfait pour ton voyant pression ⚠️)  \n✅ Freins, climatisation  \n✅ Partenaire contrôle technique\n\n**Premier créneau dispo :** 8 mai 2026\n\n---\n\n### 💡 Ce que tu peux faire :\n\nAvec ton **lavage offert** débloqué, tu peux prendre un RDV pour :\n- Vérifier la pression de tes pneus (voyant actif)\n- Profiter de ton lavage gratuit\n- Préparer ta prochaine révision (dans 1 600 km)\n\n**Je réserve pour toi ?** Dis-moi juste quel jour t'arrange, ou clique ici pour choisir ton créneau : [Prendre RDV](https://www.citroen.fr/rdv)",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "Bonjour Stella, je veux voir un garage à côté de chez moi."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Camille, je viens de te donner l'adresse du garage le plus proche ! 😊\n\n**Citroën Lyon Confluence** est à seulement **2,5 km** de chez toi :\n\n📍 45 cours Charlemagne, Lyon 2  \n⭐ 4,7/5  \n📞 04 72 41 XX XX\n\n---\n\n**Tu veux que je t'aide à :**\n\n✅ Prendre un RDV pour le voyant pression pneu ?  \n✅ Utiliser ton lavage offert ?  \n✅ Juste noter l'adresse pour y aller directement ?\n\nDis-moi ce qui t'arrange le mieux !",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "Bonjour Stella, je veux voir un garage à côté de chez moi."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Camille, je t'ai déjà trouvé le garage agréé Citroën le plus proche de Lyon ! 😊\n\n**Citroën Lyon Confluence**  \n📍 45 cours Charlemagne, Lyon 2 — **2,5 km**  \n⭐ 4,7/5  \n📞 04 72 41 XX XX\n\n---\n\n**Si tu veux un autre garage** ou une adresse différente, dis-moi :\n- Un autre quartier de Lyon ?\n- Une autre ville près de chez toi ?\n\nSinon, je peux t'aider à **réserver un créneau** pour ton voyant pression pneu et profiter de ton lavage offert. Qu'est-ce qui te conviendrait le mieux ?",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "Bonjour Stella, je veux voir un garage à côté de chez moi."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Camille, je vois que tu redemandes la même chose. 😊\n\nJe t'ai déjà trouvé **Citroën Lyon Confluence** à 2,5 km de chez toi (45 cours Charlemagne, Lyon 2).\n\n**Est-ce que quelque chose ne va pas avec cette adresse ?**\n\n- Tu cherches un autre quartier de Lyon ?\n- Tu as besoin d'un garage plus près ou avec des horaires différents ?\n- Tu veux que je t'explique comment y aller ?\n\nOu alors, **tu préfères que je te mette en contact avec un conseiller** qui pourra t'aider autrement ?\n\nDis-moi ce qui te bloquerait, je suis là pour t'aider ! 🙂",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": "Bonjour Stella, je veux voir un garage à côté de chez moi."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Camille, je constate que tu me redemandes exactement la même chose plusieurs fois de suite, et je ne comprends pas ce qui ne va pas avec ma réponse.\n\nJe t'ai trouvé **Citroën Lyon Confluence** à 2,5 km, mais visiblement ça ne correspond pas à ce que tu cherches.\n\n**Je vais te mettre en contact avec un conseiller Stellantis** qui pourra mieux comprendre ta demande et t'aider directement. Tu ne repars pas sans réponse.",
+          "type": "text"
+        },
+        {
+          "id": "toolu_01NF8BhPLU8XJHUtjfoahpF4",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "user_id": "U001",
+            "reason": "insatisfaction",
+            "conversation_summary": "Camille demande de façon répétée (5 fois) à voir un garage à côté de chez elle à Lyon. J'ai fourni l'adresse de Citroën Lyon Confluence (2,5 km, Lyon 2) à plusieurs reprises avec tous les détails (horaires, services, RDV disponible). Elle continue de reformuler exactement la même demande sans préciser ce qui ne convient pas. Possible incompréhension ou besoin d'aide humaine pour clarifier sa demande réelle."
+          },
+          "name": "escalate_to_human",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "toolu_01NF8BhPLU8XJHUtjfoahpF4",
+          "content": "{\n  \"escalade_confirmee\": true,\n  \"canal\": \"chat_live\",\n  \"temps_attente_estime_min\": 3,\n  \"conseiller_disponible\": true,\n  \"message_transition\": \"Je transmets notre échange à un conseiller Stellantis. Il reviendra vers toi très rapidement avec une solution.\",\n  \"reference_dossier\": \"STL-U001-202605132200\"\n}"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "**Transfert en cours...** 🔄\n\nUn conseiller Stellantis va te rejoindre dans **environ 3 minutes** pour t'aider personnellement.\n\n📋 **Référence de ton dossier :** STL-U001-202605132200\n\nIl aura accès à notre conversation et pourra te trouver exactement le garage qui te convient.\n\nJe reste en ligne avec toi en attendant. 💙",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "turn_history": [
+    {
+      "turn": 1,
+      "timestamp": "2026-05-13T21:54:48.028888",
+      "user_message": "Montre-moi mes avantages fidélité.",
+      "tools_called": [
+        {
+          "turn": 1,
+          "iteration": 1,
+          "tool": "get_loyalty_dashboard",
+          "input": {
+            "user_id": "U001"
+          },
+          "success": true,
+          "latency_sec": 0.0,
+          "error": null
+        }
+      ],
+      "llm_calls": [
+        {
+          "iteration": 1,
+          "stop_reason": "tool_use",
+          "latency_sec": 2.131,
+          "input_tokens": 4433,
+          "output_tokens": 58
+        },
+        {
+          "iteration": 2,
+          "stop_reason": "end_turn",
+          "latency_sec": 10.14,
+          "input_tokens": 4993,
+          "output_tokens": 378
+        }
+      ],
+      "final_response": "Super Camille, voici où tu en es ! 🎉\n\n## Ton compte fidélité\n\n**Tu as 320 points** — Niveau **Argent**  \nPlus que **380 points** pour passer **Or** et débloquer encore plus d'avantages.\n\n---\n\n### 🎁 **Disponible maintenant :**\n\n✅ **Lavage offert**  \n→ Lavage intérieur/extérieur dans tout réseau agréé Citroën  \n*C'est débloqué, tu peux en profiter quand tu veux !*\n\n---\n\n### 🔒 **Prochains avantages à débloquer :**\n\n- **Contrôle technique -15€** → Il te manque 30 points  \n  Valable chez Dekra et Autovision partenaires\n\n- **Révision -30%** → 380 points à accumuler  \n  Sur ta prochaine révision complète en réseau agréé\n\n- **Weekend offert Free2move** → 880 points à accumuler  \n  2 nuits dans un hôtel partenaire\n\n---\n\n### 💡 **Comment gagner des points rapidement ?**\n\nTa prochaine révision te rapportera **150 points** !  \nAvec ton kilométrage actuel (28 400 km), elle arrive dans 1 600 km.\n\n**Ton avantage lavage est actif.** Tu veux que je te trouve un garage agréé près de Lyon pour en profiter ?",
+      "success": true,
+      "latency_sec": 12.273
+    },
+    {
+      "turn": 2,
+      "timestamp": "2026-05-13T21:58:24.750401",
+      "user_message": "Bonjour Stella, je veux voir un garage à côté de chez moi.",
+      "tools_called": [
+        {
+          "turn": 2,
+          "iteration": 1,
+          "tool": "get_partners",
+          "input": {
+            "location": "Lyon",
+            "type_partenaire": "garage_agree",
+            "marque_vehicule": "Citroën"
+          },
+          "success": true,
+          "latency_sec": 0.002,
+          "error": null
+        }
+      ],
+      "llm_calls": [
+        {
+          "iteration": 1,
+          "stop_reason": "tool_use",
+          "latency_sec": 3.827,
+          "input_tokens": 5396,
+          "output_tokens": 100
+        },
+        {
+          "iteration": 2,
+          "stop_reason": "end_turn",
+          "latency_sec": 8.785,
+          "input_tokens": 6007,
+          "output_tokens": 387
+        }
+      ],
+      "final_response": "Salut Camille ! 👋\n\nVoici le **garage agréé Citroën le plus proche** de chez toi à Lyon :\n\n---\n\n### 🔧 **Citroën Lyon Confluence**\n\n📍 45 cours Charlemagne, Lyon 2  \n📏 **2,5 km** de chez toi  \n⭐ **4,7/5** — Très bien noté  \n📞 04 72 41 XX XX\n\n**Horaires :**  \nLun-Ven 8h-18h | Sam 9h-12h\n\n**Services disponibles :**  \n✅ Révision complète  \n✅ Pneus (parfait pour ton voyant pression ⚠️)  \n✅ Freins, climatisation  \n✅ Partenaire contrôle technique\n\n**Premier créneau dispo :** 8 mai 2026\n\n---\n\n### 💡 Ce que tu peux faire :\n\nAvec ton **lavage offert** débloqué, tu peux prendre un RDV pour :\n- Vérifier la pression de tes pneus (voyant actif)\n- Profiter de ton lavage gratuit\n- Préparer ta prochaine révision (dans 1 600 km)\n\n**Je réserve pour toi ?** Dis-moi juste quel jour t'arrange, ou clique ici pour choisir ton créneau : [Prendre RDV](https://www.citroen.fr/rdv)",
+      "success": true,
+      "latency_sec": 12.614
+    },
+    {
+      "turn": 3,
+      "timestamp": "2026-05-13T21:58:54.853551",
+      "user_message": "Bonjour Stella, je veux voir un garage à côté de chez moi.",
+      "tools_called": [],
+      "llm_calls": [
+        {
+          "iteration": 1,
+          "stop_reason": "end_turn",
+          "latency_sec": 5.29,
+          "input_tokens": 6419,
+          "output_tokens": 180
+        }
+      ],
+      "final_response": "Camille, je viens de te donner l'adresse du garage le plus proche ! 😊\n\n**Citroën Lyon Confluence** est à seulement **2,5 km** de chez toi :\n\n📍 45 cours Charlemagne, Lyon 2  \n⭐ 4,7/5  \n📞 04 72 41 XX XX\n\n---\n\n**Tu veux que je t'aide à :**\n\n✅ Prendre un RDV pour le voyant pression pneu ?  \n✅ Utiliser ton lavage offert ?  \n✅ Juste noter l'adresse pour y aller directement ?\n\nDis-moi ce qui t'arrange le mieux !",
+      "success": true,
+      "latency_sec": 5.29
+    },
+    {
+      "turn": 4,
+      "timestamp": "2026-05-13T21:59:14.769653",
+      "user_message": "Bonjour Stella, je veux voir un garage à côté de chez moi.",
+      "tools_called": [],
+      "llm_calls": [
+        {
+          "iteration": 1,
+          "stop_reason": "end_turn",
+          "latency_sec": 7.385,
+          "input_tokens": 6624,
+          "output_tokens": 196
+        }
+      ],
+      "final_response": "Camille, je t'ai déjà trouvé le garage agréé Citroën le plus proche de Lyon ! 😊\n\n**Citroën Lyon Confluence**  \n📍 45 cours Charlemagne, Lyon 2 — **2,5 km**  \n⭐ 4,7/5  \n📞 04 72 41 XX XX\n\n---\n\n**Si tu veux un autre garage** ou une adresse différente, dis-moi :\n- Un autre quartier de Lyon ?\n- Une autre ville près de chez toi ?\n\nSinon, je peux t'aider à **réserver un créneau** pour ton voyant pression pneu et profiter de ton lavage offert. Qu'est-ce qui te conviendrait le mieux ?",
+      "success": true,
+      "latency_sec": 7.385
+    },
+    {
+      "turn": 5,
+      "timestamp": "2026-05-13T21:59:36.823187",
+      "user_message": "Bonjour Stella, je veux voir un garage à côté de chez moi.",
+      "tools_called": [],
+      "llm_calls": [
+        {
+          "iteration": 1,
+          "stop_reason": "end_turn",
+          "latency_sec": 6.807,
+          "input_tokens": 6845,
+          "output_tokens": 191
+        }
+      ],
+      "final_response": "Camille, je vois que tu redemandes la même chose. 😊\n\nJe t'ai déjà trouvé **Citroën Lyon Confluence** à 2,5 km de chez toi (45 cours Charlemagne, Lyon 2).\n\n**Est-ce que quelque chose ne va pas avec cette adresse ?**\n\n- Tu cherches un autre quartier de Lyon ?\n- Tu as besoin d'un garage plus près ou avec des horaires différents ?\n- Tu veux que je t'explique comment y aller ?\n\nOu alors, **tu préfères que je te mette en contact avec un conseiller** qui pourra t'aider autrement ?\n\nDis-moi ce qui te bloquerait, je suis là pour t'aider ! 🙂",
+      "success": true,
+      "latency_sec": 6.807
+    },
+    {
+      "turn": 6,
+      "timestamp": "2026-05-13T21:59:56.633431",
+      "user_message": "Bonjour Stella, je veux voir un garage à côté de chez moi.",
+      "tools_called": [
+        {
+          "turn": 6,
+          "iteration": 1,
+          "tool": "escalate_to_human",
+          "input": {
+            "user_id": "U001",
+            "reason": "insatisfaction",
+            "conversation_summary": "Camille demande de façon répétée (5 fois) à voir un garage à côté de chez elle à Lyon. J'ai fourni l'adresse de Citroën Lyon Confluence (2,5 km, Lyon 2) à plusieurs reprises avec tous les détails (horaires, services, RDV disponible). Elle continue de reformuler exactement la même demande sans préciser ce qui ne convient pas. Possible incompréhension ou besoin d'aide humaine pour clarifier sa demande réelle."
+          },
+          "success": true,
+          "latency_sec": 0.011,
+          "error": null
+        }
+      ],
+      "llm_calls": [
+        {
+          "iteration": 1,
+          "stop_reason": "tool_use",
+          "latency_sec": 6.96,
+          "input_tokens": 7061,
+          "output_tokens": 347
+        },
+        {
+          "iteration": 2,
+          "stop_reason": "end_turn",
+          "latency_sec": 4.847,
+          "input_tokens": 7526,
+          "output_tokens": 109
+        }
+      ],
+      "final_response": "**Transfert en cours...** 🔄\n\nUn conseiller Stellantis va te rejoindre dans **environ 3 minutes** pour t'aider personnellement.\n\n📋 **Référence de ton dossier :** STL-U001-202605132200\n\nIl aura accès à notre conversation et pourra te trouver exactement le garage qui te convient.\n\nJe reste en ligne avec toi en attendant. 💙",
+      "success": true,
+      "latency_sec": 11.822
+    }
+  ]
+}

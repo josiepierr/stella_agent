@@ -1,0 +1,131 @@
+{
+  "session_id": "U001_20260516_124937",
+  "timestamp": "2026-05-16T13:08:36.558248",
+  "model": "claude-sonnet-4-5",
+  "user": {
+    "user_id": "U001",
+    "prenom": "Camille",
+    "persona_type": "camille"
+  },
+  "conducteur_actif": null,
+  "vehicle": {
+    "marque": "Citroën",
+    "modele": "C3",
+    "motorisation": "thermique"
+  },
+  "metrics": {
+    "session_id": "U001_20260516_124937",
+    "user_id": "U001",
+    "prenom": "Camille",
+    "conducteur_actif": null,
+    "duree_session_sec": 764.5,
+    "nb_tours_conversation": 1,
+    "nb_appels_tools": 1,
+    "nb_tools_success": 1,
+    "nb_tools_failed": 0,
+    "tool_success_rate": 1.0,
+    "tokens_input": 11218,
+    "tokens_output": 367,
+    "tokens_total": 11585,
+    "cout_estime_usd": 0.039159,
+    "cout_estime_eur": 0.036026,
+    "avg_llm_latency_sec": 5.111,
+    "avg_tool_latency_sec": 0.001,
+    "nb_erreurs": 0,
+    "tool_history": [
+      {
+        "turn": 1,
+        "iteration": 1,
+        "tool": "get_loyalty_dashboard",
+        "input": {
+          "user_id": "U001"
+        },
+        "success": true,
+        "latency_sec": 0.001,
+        "error": null
+      }
+    ],
+    "errors": []
+  },
+  "conversation_history": [
+    {
+      "role": "user",
+      "content": "Montre-moi mes avantages fidélité."
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_013bjynvEHGBfijsjL8KCDkG",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "user_id": "U001"
+          },
+          "name": "get_loyalty_dashboard",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "toolu_013bjynvEHGBfijsjL8KCDkG",
+          "content": "{\n  \"prenom\": \"Camille\",\n  \"points_actuels\": 320,\n  \"niveau\": \"Argent\",\n  \"prochain_niveau\": \"Or\",\n  \"points_pour_niveau_suivant\": 380,\n  \"avantages\": [\n    {\n      \"titre\": \"Lavage offert\",\n      \"points_requis\": 200,\n      \"deja_debloque\": true,\n      \"description\": \"Lavage intérieur/extérieur dans le réseau partenaire\"\n    },\n    {\n      \"titre\": \"Contrôle technique -15€\",\n      \"points_requis\": 350,\n      \"deja_debloque\": false,\n      \"description\": \"Valable dans les centres partenaires\"\n    },\n    {\n      \"titre\": \"Révision -30%\",\n      \"points_requis\": 700,\n      \"deja_debloque\": false,\n      \"description\": \"Sur la prochaine révision complète en réseau agréé\"\n    },\n    {\n      \"titre\": \"Weekend offert Free2move\",\n      \"points_requis\": 1200,\n      \"deja_debloque\": false,\n      \"description\": \"2 nuits dans un hôtel partenaire Free2move\"\n    }\n  ],\n  \"avantages_disponibles\": [\n    {\n      \"titre\": \"Lavage offert\",\n      \"points_requis\": 200,\n      \"deja_debloque\": true,\n      \"description\": \"Lavage intérieur/extérieur dans le réseau partenaire\"\n    }\n  ],\n  \"historique_recent\": [\n    {\n      \"date\": \"2026-04-01\",\n      \"action\": \"explication_voyant\",\n      \"points\": \"+50\"\n    }\n  ],\n  \"prochain_gain\": \"Passe ta prochaine révision et gagne 150 points !\"\n}"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Salut Camille ! 👋\n\nVoilà où tu en es avec ton programme fidélité :\n\n## 🎯 **Ton niveau actuel**\n**Argent** · 320 points  \nPlus que 380 points pour passer **Or** ✨\n\n---\n\n## 🎁 **Ce que tu peux utiliser maintenant**\n\n✅ **Lavage offert**  \nLavage intérieur/extérieur dans le réseau partenaire — disponible dès maintenant !\n\n---\n\n## 🔒 **Prochains avantages à débloquer**\n\n**Contrôle technique -15€** → dans 30 points  \n**Révision -30%** → dans 380 points  \n**Weekend offert Free2move** → dans 880 points\n\n---\n\n## 💡 **Comment gagner des points rapidement**\n\nTa prochaine révision te fera gagner **150 points** — elle arrive dans 1 600 km.  \nÇa te propulserait directement au niveau **Or** ! 🚀\n\n---\n\n**Action concrète :**  \nTu veux réserver ton lavage offert ? Je peux te trouver un partenaire proche de Lyon. 🧼",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "turn_history": [
+    {
+      "turn": 1,
+      "timestamp": "2026-05-16T13:08:26.332347",
+      "user_message": "Montre-moi mes avantages fidélité.",
+      "tools_called": [
+        {
+          "turn": 1,
+          "iteration": 1,
+          "tool": "get_loyalty_dashboard",
+          "input": {
+            "user_id": "U001"
+          },
+          "success": true,
+          "latency_sec": 0.001,
+          "error": null
+        }
+      ],
+      "llm_calls": [
+        {
+          "iteration": 1,
+          "stop_reason": "tool_use",
+          "latency_sec": 2.06,
+          "input_tokens": 5333,
+          "output_tokens": 58
+        },
+        {
+          "iteration": 2,
+          "stop_reason": "end_turn",
+          "latency_sec": 8.162,
+          "input_tokens": 5885,
+          "output_tokens": 309
+        }
+      ],
+      "final_response": "Salut Camille ! 👋\n\nVoilà où tu en es avec ton programme fidélité :\n\n## 🎯 **Ton niveau actuel**\n**Argent** · 320 points  \nPlus que 380 points pour passer **Or** ✨\n\n---\n\n## 🎁 **Ce que tu peux utiliser maintenant**\n\n✅ **Lavage offert**  \nLavage intérieur/extérieur dans le réseau partenaire — disponible dès maintenant !\n\n---\n\n## 🔒 **Prochains avantages à débloquer**\n\n**Contrôle technique -15€** → dans 30 points  \n**Révision -30%** → dans 380 points  \n**Weekend offert Free2move** → dans 880 points\n\n---\n\n## 💡 **Comment gagner des points rapidement**\n\nTa prochaine révision te fera gagner **150 points** — elle arrive dans 1 600 km.  \nÇa te propulserait directement au niveau **Or** ! 🚀\n\n---\n\n**Action concrète :**  \nTu veux réserver ton lavage offert ? Je peux te trouver un partenaire proche de Lyon. 🧼",
+      "success": true,
+      "latency_sec": 10.225
+    }
+  ]
+}

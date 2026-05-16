@@ -1,0 +1,135 @@
+{
+  "session_id": "U001_20260516_105910",
+  "timestamp": "2026-05-16T10:59:22.943305",
+  "model": "claude-sonnet-4-5",
+  "user": {
+    "user_id": "U001",
+    "prenom": "Camille",
+    "persona_type": "camille"
+  },
+  "vehicle": {
+    "marque": "Citroën",
+    "modele": "C3",
+    "motorisation": "thermique"
+  },
+  "metrics": {
+    "session_id": "U001_20260516_105910",
+    "user_id": "U001",
+    "prenom": "Camille",
+    "duree_session_sec": 12.1,
+    "nb_tours_conversation": 1,
+    "nb_appels_tools": 1,
+    "nb_tools_success": 1,
+    "nb_tools_failed": 0,
+    "tool_success_rate": 1.0,
+    "tokens_input": 9221,
+    "tokens_output": 388,
+    "tokens_total": 9609,
+    "cout_estime_usd": 0.033483,
+    "cout_estime_eur": 0.030804,
+    "avg_llm_latency_sec": 6.041,
+    "avg_tool_latency_sec": 0.003,
+    "nb_erreurs": 0,
+    "tool_history": [
+      {
+        "turn": 1,
+        "iteration": 1,
+        "tool": "escalate_to_human",
+        "input": {
+          "user_id": "U001",
+          "reason": "insatisfaction",
+          "conversation_summary": "Camille (24 ans, Lyon) exprime une insatisfaction forte concernant une réparation mal effectuée par un garage recommandé. Contexte véhicule : Citroën C3 2021, 28400 km, voyant pression pneu actif. Session précédente : explication voyant pression pneu, proposition RDV non pris. Nécessite intervention humaine immédiate pour traiter la réclamation qualité réseau."
+        },
+        "success": true,
+        "latency_sec": 0.003,
+        "error": null
+      }
+    ],
+    "errors": []
+  },
+  "conversation_history": [
+    {
+      "role": "user",
+      "content": "Je suis vraiment pas contente, le garage que tu m'as recommandé a mal réparé ma voiture !"
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "id": "toolu_01JFRKMUFwjCe38EUtYJszDE",
+          "caller": {
+            "type": "direct"
+          },
+          "input": {
+            "user_id": "U001",
+            "reason": "insatisfaction",
+            "conversation_summary": "Camille (24 ans, Lyon) exprime une insatisfaction forte concernant une réparation mal effectuée par un garage recommandé. Contexte véhicule : Citroën C3 2021, 28400 km, voyant pression pneu actif. Session précédente : explication voyant pression pneu, proposition RDV non pris. Nécessite intervention humaine immédiate pour traiter la réclamation qualité réseau."
+          },
+          "name": "escalate_to_human",
+          "type": "tool_use"
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "tool_result",
+          "tool_use_id": "toolu_01JFRKMUFwjCe38EUtYJszDE",
+          "content": "{\n  \"escalade_confirmee\": true,\n  \"canal\": \"chat_live\",\n  \"temps_attente_estime_min\": 3,\n  \"conseiller_disponible\": true,\n  \"message_transition\": \"Je transmets notre échange à un conseiller Stellantis. Il reviendra vers toi très rapidement avec une solution.\",\n  \"reference_dossier\": \"STL-U001-202605161059\"\n}"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "citations": null,
+          "text": "Camille, je comprends ta frustration, et c'est vraiment pas normal. \n\nJe te mets **immédiatement en contact avec un conseiller Stellantis** qui va s'occuper de ton cas personnellement. Il pourra vérifier ce qui s'est passé, échanger avec le garage, et trouver une vraie solution.\n\n**Un conseiller sera avec toi dans environ 3 minutes** — tu ne repars pas sans réponse.\n\nTon numéro de dossier : **STL-U001-202605161059**\n\nJe reste avec toi pendant la transition. Peux-tu me dire rapidement quel type de réparation avait été faite, pour que je transmette l'info au conseiller ?",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "turn_history": [
+    {
+      "turn": 1,
+      "timestamp": "2026-05-16T10:59:10.857003",
+      "user_message": "Je suis vraiment pas contente, le garage que tu m'as recommandé a mal réparé ma voiture !",
+      "tools_called": [
+        {
+          "turn": 1,
+          "iteration": 1,
+          "tool": "escalate_to_human",
+          "input": {
+            "user_id": "U001",
+            "reason": "insatisfaction",
+            "conversation_summary": "Camille (24 ans, Lyon) exprime une insatisfaction forte concernant une réparation mal effectuée par un garage recommandé. Contexte véhicule : Citroën C3 2021, 28400 km, voyant pression pneu actif. Session précédente : explication voyant pression pneu, proposition RDV non pris. Nécessite intervention humaine immédiate pour traiter la réclamation qualité réseau."
+          },
+          "success": true,
+          "latency_sec": 0.003,
+          "error": null
+        }
+      ],
+      "llm_calls": [
+        {
+          "iteration": 1,
+          "stop_reason": "tool_use",
+          "latency_sec": 4.901,
+          "input_tokens": 4447,
+          "output_tokens": 208
+        },
+        {
+          "iteration": 2,
+          "stop_reason": "end_turn",
+          "latency_sec": 7.181,
+          "input_tokens": 4774,
+          "output_tokens": 180
+        }
+      ],
+      "final_response": "Camille, je comprends ta frustration, et c'est vraiment pas normal. \n\nJe te mets **immédiatement en contact avec un conseiller Stellantis** qui va s'occuper de ton cas personnellement. Il pourra vérifier ce qui s'est passé, échanger avec le garage, et trouver une vraie solution.\n\n**Un conseiller sera avec toi dans environ 3 minutes** — tu ne repars pas sans réponse.\n\nTon numéro de dossier : **STL-U001-202605161059**\n\nJe reste avec toi pendant la transition. Peux-tu me dire rapidement quel type de réparation avait été faite, pour que je transmette l'info au conseiller ?",
+      "success": true,
+      "latency_sec": 12.086
+    }
+  ]
+}

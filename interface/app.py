@@ -1,7 +1,7 @@
 """
 app.py
 Interface Streamlit de Stella — Agent Mobilité Stellantis
-Version finale UX hackathon : chat stable, input visible, cartes visuelles, CTA, sidebar persistante.
+Version corrigée : chat stable, input moderne, mode vocal anti-boucle, conducteur actif en sidebar.
 """
 
 import streamlit as st
@@ -11,12 +11,30 @@ import json
 import html
 import time
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "agent"))
+# ──────────────────────────────────────────────
+# IMPORTS PROJET
+# ──────────────────────────────────────────────
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+AGENT_DIR = os.path.join(BASE_DIR, "agent")
+
+if AGENT_DIR not in sys.path:
+    sys.path.insert(0, AGENT_DIR)
+
 from stella import StellaAgent
+
+
+# ──────────────────────────────────────────────
+# VOIX OPTIONNELLE
+# ──────────────────────────────────────────────
+
+VOICE_AVAILABLE = False
+
 try:
-    from voice import render_voice_input, speak_response, render_audio_player
-    VOICE_AVAILABLE = True
-except ImportError:
+    if os.getenv("OPENAI_API_KEY"):
+        from voice import render_voice_input, speak_response, render_audio_player
+        VOICE_AVAILABLE = True
+except Exception:
     VOICE_AVAILABLE = False
 
 
@@ -68,11 +86,17 @@ st.markdown("""
     background:var(--blue-deep) !important;
     min-width:280px !important;
 }
-[data-testid="stSidebar"] > div { background:var(--blue-deep) !important; }
+[data-testid="stSidebar"] > div {
+    background:var(--blue-deep) !important;
+    overflow-y:auto !important;
+    height:100vh !important;
+}
 [data-testid="stSidebar"] p,
 [data-testid="stSidebar"] span,
 [data-testid="stSidebar"] label,
-[data-testid="stSidebar"] div { color:rgba(255,255,255,0.9) !important; }
+[data-testid="stSidebar"] div {
+    color:rgba(255,255,255,0.9) !important;
+}
 
 .stella-brand {
     text-align:center;
@@ -329,8 +353,9 @@ st.markdown("""
     color:#AAAACC !important;
     -webkit-text-fill-color:#AAAACC !important;
 }
-.send-btn .stButton > button,
-.stFormSubmitButton > button {
+
+/* Bouton envoyer */
+.send-btn .stButton > button {
     background:var(--blue-deep) !important;
     color:white !important;
     border:none !important;
@@ -339,9 +364,16 @@ st.markdown("""
     font-weight:800 !important;
     height:44px !important;
 }
-.send-btn .stButton > button:hover,
-.stFormSubmitButton > button:hover {
+.send-btn .stButton > button:hover {
     background:var(--blue-mid) !important;
+}
+
+/* Audio input compact */
+.voice-box [data-testid="stAudioInput"] {
+    margin-top:-8px !important;
+}
+.voice-box button {
+    border-radius:12px !important;
 }
 
 .sugg-btn .stButton > button {
@@ -398,51 +430,44 @@ def add_assistant_message(message: str):
 
 
 def ask_stella(message: str):
-    add_user_message(message)
+    """Envoie un message à l'agent et ajoute la réponse à l'historique."""
+    if not message or not message.strip():
+        return
+
+    add_user_message(message.strip())
+
     with st.spinner("Stella analyse la situation..."):
-        time.sleep(0.6)
-        response = st.session_state.agent.chat(message)
+        response = st.session_state.agent.chat(message.strip())
+
     add_assistant_message(response)
+
+    # Synthèse vocale optionnelle.
+    # On stocke l'audio dans session_state au lieu de l'afficher directement ici,
+    # car ask_stella() est presque toujours suivi d'un st.rerun().
     if VOICE_AVAILABLE and st.session_state.get("voice_enabled") and response:
         audio = speak_response(response)
         if audio:
-            render_audio_player(audio)
+            st.session_state.last_tts_time = time.time()
+            st.session_state.last_audio_response = audio
+            st.session_state.last_audio_text = response[:160]
 
 
 def set_pending(query: str):
     st.session_state.pending_sugg = query
 
 
+def get_active_driver_name(user: dict) -> str:
+    """Retourne le prénom du conducteur actif affiché dans l'interface."""
+    conducteur = st.session_state.get("conducteur_actif")
+    if isinstance(conducteur, dict) and conducteur.get("prenom"):
+        return conducteur["prenom"]
+    return user.get("prenom", "conductrice")
+
+
 def render_profile_cards(user: dict, vehicle: dict):
     """Cartes visuelles contextuelles pour effet démo."""
     uid = user["user_id"]
     motorisation = vehicle.get("motorisation")
-    # ── Sélecteur conducteur actif ─────────────────────────────
-    conducteurs = user.get("conducteurs_associes", [])
-    if conducteurs:
-        options_conducteur = [f"{user['prenom']} (propriétaire)"] +                              [f"{c['prenom']} ({c['relation']})" for c in conducteurs]
-        choix = st.selectbox(
-            "Qui prend le volant ?",
-            options_conducteur,
-            key=f"conducteur_{chosen_uid}",
-            help="Les points fidélité et offres restent liés à la propriétaire"
-        )
-        # Retrouver le conducteur sélectionné
-        if choix == options_conducteur[0]:
-            conducteur_actif = None  # propriétaire
-        else:
-            idx = options_conducteur.index(choix) - 1
-            conducteur_actif = conducteurs[idx]
-
-        # Mettre à jour l'agent si le conducteur change
-        prev = st.session_state.get("conducteur_actif_id")
-        curr = conducteur_actif.get("conducteur_id") if conducteur_actif else None
-        if prev != curr:
-            st.session_state["conducteur_actif_id"] = curr
-            if st.session_state.agent:
-                st.session_state.agent.set_conducteur(conducteur_actif)
-    else:
-        conducteur_actif = None
 
     voyants = vehicle.get("voyants_actifs", [])
     batterie = vehicle.get("niveau_batterie_pct", 100)
@@ -509,58 +534,63 @@ def render_profile_cards(user: dict, vehicle: dict):
     st.markdown('</div>', unsafe_allow_html=True)
 
 
-def render_messages(user: dict, vehicle: dict, voyants: list):
+def render_messages(user: dict, vehicle: dict, voyants: list, display_name: str | None = None):
+    """Affiche les messages sans risquer d'afficher du HTML brut."""
+    display_name = display_name or user.get("prenom", "conductrice")
+
     if not st.session_state.messages:
         bat = vehicle.get("niveau_batterie_pct", 100)
         anniv = vehicle.get("anniversaire_vehicule_dans_jours")
 
         if voyants:
             welcome = (
-                f"👋 Bonjour {user['prenom']} ! J’ai détecté un voyant actif sur ta "
+                f"👋 Bonjour {display_name} ! J’ai détecté un voyant actif sur ta "
                 f"{vehicle['marque']} {vehicle['modele']}. Je peux t’aider à comprendre quoi faire."
             )
         elif vehicle.get("motorisation") == "electrique" and bat < 30:
             welcome = (
-                f"⚡ Bonjour {user['prenom']} ! Ta batterie est à {bat}%. "
+                f"⚡ Bonjour {display_name} ! Ta batterie est à {bat}%. "
                 f"Je peux t’aider à trouver une borne proche et adaptée."
             )
         elif anniv == 0:
             welcome = (
-                f"🎉 Bonjour {user['prenom']} ! Aujourd’hui, c’est l’anniversaire de ta voiture. "
+                f"🎉 Bonjour {display_name} ! Aujourd’hui, c’est l’anniversaire de ta voiture. "
                 f"J’ai préparé tes avantages du moment."
             )
         else:
-            welcome = f"👋 Bonjour {user['prenom']} ! Comment puis-je t’aider aujourd’hui ?"
+            welcome = f"👋 Bonjour {display_name} ! Comment puis-je t’aider aujourd’hui ?"
 
+        st.markdown('<div class="messages-zone">', unsafe_allow_html=True)
         st.markdown(f"""
-        <div class="messages-zone">
             <div class="msg-row">
                 <div class="msg-ico stella">🌟</div>
                 <div class="bubble stella">{clean_message(welcome)}</div>
             </div>
-        </div>
         """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        return
 
-    else:
-        msgs_html = ""
-        for msg in st.session_state.messages:
-            content = clean_message(msg["content"])
-            if msg["role"] == "user":
-                msgs_html += f"""
+    st.markdown('<div class="messages-zone">', unsafe_allow_html=True)
+
+    for msg in st.session_state.messages:
+        content = clean_message(msg.get("content", ""))
+
+        if msg.get("role") == "user":
+            st.markdown(f"""
                 <div class="msg-row user">
                     <div class="msg-ico user">👤</div>
                     <div class="bubble user">{content}</div>
                 </div>
-                """
-            else:
-                msgs_html += f"""
+            """, unsafe_allow_html=True)
+        else:
+            st.markdown(f"""
                 <div class="msg-row">
                     <div class="msg-ico stella">🌟</div>
                     <div class="bubble stella">{content}</div>
                 </div>
-                """
+            """, unsafe_allow_html=True)
 
-        st.markdown(f'<div class="messages-zone">{msgs_html}</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def render_quick_suggestions():
@@ -598,6 +628,20 @@ if "current_uid" not in st.session_state:
     st.session_state.current_uid = None
 if "pending_sugg" not in st.session_state:
     st.session_state.pending_sugg = None
+if "conducteur_actif_id" not in st.session_state:
+    st.session_state.conducteur_actif_id = None
+if "last_voice_hash" not in st.session_state:
+    st.session_state.last_voice_hash = None
+if "last_tts_time" not in st.session_state:
+    st.session_state.last_tts_time = 0
+if "last_audio_response" not in st.session_state:
+    st.session_state.last_audio_response = None
+if "last_audio_text" not in st.session_state:
+    st.session_state.last_audio_text = None
+if "conducteur_actif" not in st.session_state:
+    st.session_state.conducteur_actif = None
+if "input_key" not in st.session_state:
+    st.session_state.input_key = 0
 
 
 # ──────────────────────────────────────────────
@@ -633,6 +677,12 @@ with st.sidebar:
         st.session_state.messages = []
         st.session_state.current_uid = chosen_uid
         st.session_state.pending_sugg = None
+        st.session_state.conducteur_actif_id = None
+        st.session_state.conducteur_actif = None
+        st.session_state.last_voice_hash = None
+        st.session_state.last_audio_response = None
+        st.session_state.last_audio_text = None
+        st.session_state.input_key += 1
 
     user = next(u for u in users if u["user_id"] == chosen_uid)
     vehicle = next(v for v in vehicles if v["user_id"] == chosen_uid)
@@ -676,6 +726,55 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
+    # ── Conducteur actif ─────────────────────────────
+    conducteurs = user.get("conducteurs_associes", [])
+
+    if conducteurs:
+        st.markdown(
+            '<p style="font-size:0.68rem;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.45);margin:10px 0 5px;">Conducteur actif</p>',
+            unsafe_allow_html=True
+        )
+
+        options_conducteur = (
+            [f"{user['prenom']} (propriétaire)"]
+            + [f"{c['prenom']} ({c.get('relation', 'conducteur')})" for c in conducteurs]
+        )
+
+        choix_conducteur = st.selectbox(
+            "Conducteur actif",
+            options_conducteur,
+            label_visibility="collapsed",
+            key=f"conducteur_sidebar_{chosen_uid}",
+            help="Les points fidélité et les offres restent liés à la propriétaire."
+        )
+
+        if choix_conducteur == options_conducteur[0]:
+            conducteur_actif = None
+        else:
+            idx = options_conducteur.index(choix_conducteur) - 1
+            conducteur_actif = conducteurs[idx]
+
+        curr = conducteur_actif.get("conducteur_id") if conducteur_actif else None
+
+        if st.session_state.conducteur_actif_id != curr:
+            st.session_state.conducteur_actif_id = curr
+            st.session_state.conducteur_actif = conducteur_actif
+
+            if st.session_state.agent and hasattr(st.session_state.agent, "set_conducteur"):
+                st.session_state.agent.set_conducteur(conducteur_actif, reset_conversation=True)
+
+            st.session_state.messages = []
+            st.session_state.pending_sugg = None
+            st.session_state.last_voice_hash = None
+            st.session_state.last_audio_response = None
+            st.session_state.last_audio_text = None
+            st.session_state.input_key += 1
+            st.rerun()
+
+    else:
+        st.session_state.conducteur_actif_id = None
+        st.session_state.conducteur_actif = None
+
     if st.session_state.agent:
         m = st.session_state.agent.get_metrics()
         st.markdown(f"""
@@ -704,14 +803,21 @@ with st.sidebar:
         st.session_state["voice_enabled"] = st.toggle(
             "🎙️ Mode vocal",
             value=st.session_state.get("voice_enabled", False),
-            help="Active le micro et la lecture vocale des réponses de Stella"
+            help="Active le micro et la lecture vocale des réponses de Stella."
         )
+    else:
+        st.session_state["voice_enabled"] = False
+        st.caption("🎙️ Mode vocal désactivé : OPENAI_API_KEY absente.")
 
     if st.button("🏠 Nouvelle conversation", use_container_width=True):
         if st.session_state.agent:
             st.session_state.agent.reset_conversation()
         st.session_state.messages = []
         st.session_state.pending_sugg = None
+        st.session_state.last_voice_hash = None
+        st.session_state.last_audio_response = None
+        st.session_state.last_audio_text = None
+        st.session_state.input_key += 1
         st.rerun()
 
     st.markdown("""
@@ -725,13 +831,15 @@ with st.sidebar:
 # MAIN
 # ──────────────────────────────────────────────
 
+active_display_name = get_active_driver_name(user)
+
 st.markdown(f"""
 <div class="chat-header">
     <div class="chat-avatar-hdr">🌟</div>
     <div>
         <div class="chat-hdr-title">Stella</div>
         <div class="chat-hdr-sub">
-            <span class="online-dot"></span>En ligne · Compagnon de {user['prenom']}
+            <span class="online-dot"></span>En ligne · {active_display_name}
         </div>
     </div>
 </div>
@@ -743,34 +851,77 @@ if st.session_state.pending_sugg:
     ask_stella(msg)
     st.rerun()
 
-render_messages(user, vehicle, voyants)
+render_messages(user, vehicle, voyants, active_display_name)
+
+if (
+    VOICE_AVAILABLE
+    and st.session_state.get("voice_enabled")
+    and st.session_state.get("last_audio_response")
+):
+    st.audio(st.session_state.last_audio_response, format="audio/mp3")
+    if st.session_state.get("last_audio_text"):
+        st.caption("🔊 Dernière réponse vocale disponible.")
 
 if not st.session_state.messages:
     render_profile_cards(user, vehicle)
     render_quick_suggestions()
 
-# INPUT TOUJOURS VISIBLE
+
+# ──────────────────────────────────────────────
+# INPUT CHAT — STYLE MODERNE, STABLE
+# ──────────────────────────────────────────────
+
 st.markdown('<div class="input-wrapper">', unsafe_allow_html=True)
 
-with st.form(key="chat_form", clear_on_submit=True):
-    col_input, col_send = st.columns([5, 1])
-    with col_input:
-        user_input = st.text_input(
-            "Message",
-            placeholder="Écris un message à Stella...",
-            label_visibility="collapsed"
-        )
-    with col_send:
-        submitted = st.form_submit_button("Envoyer →", use_container_width=True)
+voice_payload = None
+
+if VOICE_AVAILABLE and st.session_state.get("voice_enabled"):
+    col_voice, col_input, col_send = st.columns([0.9, 5.2, 1.2])
+else:
+    col_input, col_send = st.columns([5.2, 1.2])
+    col_voice = None
+
+if col_voice is not None:
+    with col_voice:
+        st.markdown('<div class="voice-box">', unsafe_allow_html=True)
+        voice_payload = render_voice_input()
+        st.markdown('</div>', unsafe_allow_html=True)
+
+with col_input:
+    user_input = st.text_input(
+        "Message",
+        placeholder="Écris un message à Stella...",
+        label_visibility="collapsed",
+        key=f"chat_input_{st.session_state.input_key}"
+    )
+
+with col_send:
+    st.markdown('<div class="send-btn">', unsafe_allow_html=True)
+    send_clicked = st.button("Envoyer →", use_container_width=True, key="send_btn")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-if VOICE_AVAILABLE and st.session_state.get("voice_enabled"):
-    voice_text = render_voice_input()
-    if voice_text:
+
+# ──────────────────────────────────────────────
+# TRAITEMENT MESSAGE VOCAL
+# ──────────────────────────────────────────────
+
+if voice_payload:
+    voice_text = voice_payload.get("text", "").strip()
+    voice_hash = voice_payload.get("hash")
+
+    if voice_text and voice_hash and voice_hash != st.session_state.last_voice_hash:
+        st.session_state.last_voice_hash = voice_hash
         ask_stella(voice_text)
         st.rerun()
 
-if submitted and user_input.strip():
+
+# ──────────────────────────────────────────────
+# TRAITEMENT MESSAGE TEXTE
+# ──────────────────────────────────────────────
+
+if send_clicked and user_input.strip():
     ask_stella(user_input.strip())
+    st.session_state.input_key += 1
     st.rerun()
